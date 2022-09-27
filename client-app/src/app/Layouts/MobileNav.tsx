@@ -16,11 +16,7 @@ import {
 
 export const MobileNav = () => {
   return (
-    <Stack
-      bg={useColorModeValue("white", "gray.800")}
-      p={4}
-      display={{ md: "none" }}
-    >
+    <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -43,10 +39,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           textDecoration: "none",
         }}
       >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
+        <Text fontWeight={600} color={useColorModeValue("gray.600", "gray.200")}>
           {label}
         </Text>
         {children && (
@@ -89,36 +82,6 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: Array<NavItem> = [
-  // {
-  //   label: "Inspiration",
-  //   children: [
-  //     {
-  //       label: "Explore Design Work",
-  //       subLabel: "Trending Design to inspire you",
-  //       href: "#",
-  //     },
-  //     {
-  //       label: "New & Noteworthy",
-  //       subLabel: "Up-and-coming Designers",
-  //       href: "#",
-  //     },
-  //   ],
-  // },
-  // {
-  //   label: "Find Work",
-  //   children: [
-  //     {
-  //       label: "Job Board",
-  //       subLabel: "Find your dream design job",
-  //       href: "#",
-  //     },
-  //     {
-  //       label: "Freelance Projects",
-  //       subLabel: "An exclusive list for contract work",
-  //       href: "#",
-  //     },
-  //   ],
-  // },
   {
     label: "Activities",
     href: "#",

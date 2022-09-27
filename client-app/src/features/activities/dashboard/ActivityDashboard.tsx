@@ -1,5 +1,4 @@
-import { GridItem, ListItem, SimpleGrid, UnorderedList } from "@chakra-ui/react";
-import React from "react";
+import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import { Activity } from "../../../app/models/activity";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
@@ -15,6 +14,7 @@ type Props = {
   handleCloseEditForm: () => void;
   handleCreateOrEditActivity: (mutatedActivity: Activity) => void;
   handleDeleteActivity: (id: string) => void;
+  submitting: boolean;
 };
 
 const ActivityDashboard = ({
@@ -27,6 +27,7 @@ const ActivityDashboard = ({
   handleCloseEditForm,
   handleCreateOrEditActivity,
   handleDeleteActivity,
+  submitting,
 }: Props) => {
   return (
     <SimpleGrid
@@ -46,11 +47,13 @@ const ActivityDashboard = ({
         colSpan={{
           md: 1,
         }}
+        mb={8}
       >
         <ActivityList
           activities={activities}
           handleSelectActivity={handleSelectActivity}
           handleDeleteActivity={handleDeleteActivity}
+          submitting={submitting}
         />
       </GridItem>
       <GridItem
@@ -70,6 +73,7 @@ const ActivityDashboard = ({
             selectedActivity={selectedActivity}
             handleCloseEditForm={handleCloseEditForm}
             handleCreateOrEditActivity={handleCreateOrEditActivity}
+            submitting={submitting}
           />
         )}
       </GridItem>

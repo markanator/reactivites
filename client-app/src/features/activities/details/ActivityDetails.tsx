@@ -30,6 +30,7 @@ const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleO
         p={6}
         overflow={"hidden"}
         position="relative"
+        pos="fixed"
       >
         <Box bg={"gray.100"} mt={-6} mx={-6} mb={6} pos={"relative"}>
           <Image src={`/assets/categoryImages/${selectedActivity.category}.jpg`} />

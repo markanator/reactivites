@@ -15,9 +15,10 @@ type Props = {
   activities: Activity[];
   handleSelectActivity: (id: string) => void;
   handleDeleteActivity: (id: string) => void;
+  submitting: boolean;
 };
 
-const ActivityList = ({ activities, handleSelectActivity, handleDeleteActivity }: Props) => {
+const ActivityList = ({ activities, handleSelectActivity, handleDeleteActivity, submitting }: Props) => {
   return (
     <>
       <Stack spacing={8} mx={"auto"}>
@@ -33,10 +34,12 @@ const ActivityList = ({ activities, handleSelectActivity, handleDeleteActivity }
               <Tag>{category}</Tag>
               <HStack spacing={4}>
                 <Button
+                  name={id}
                   colorScheme={"red"}
                   variant="outline"
                   size="sm"
                   onClick={() => handleDeleteActivity(id)}
+                  isLoading={submitting}
                 >
                   Delete
                 </Button>

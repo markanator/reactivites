@@ -14,8 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { v4 as uuid } from "uuid";
-import { Activity } from "../../../app/models/activity";
+import type { Activity } from "../../../app/models/activity";
 
 const ActivityFormSchema = yup
   .object({
@@ -35,19 +34,27 @@ type Props = {
   selectedActivity?: Activity;
   handleCloseEditForm: () => void;
   handleCreateOrEditActivity: (mutatedActivity: Activity) => void;
+  submitting: boolean;
 };
 
-const ActivityForm = ({ selectedActivity, handleCloseEditForm, handleCreateOrEditActivity }: Props) => {
+const ActivityForm = ({
+  selectedActivity,
+  handleCloseEditForm,
+  handleCreateOrEditActivity,
+  submitting,
+}: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormData>({
     resolver: yupResolver(ActivityFormSchema),
-    defaultValues: selectedActivity ? selectedActivity : {},
+    defaultValues: selectedActivity
+      ? { ...selectedActivity, date: selectedActivity?.date?.split("T")[0] }
+      : {},
   });
   const onSubmit = (data: IFormData) => {
-    const activity = { ...data, id: selectedActivity?.id ?? uuid() };
+    const activity = { ...data, id: selectedActivity?.id ?? "" };
     handleCreateOrEditActivity(activity);
     console.log({ activity });
   };
@@ -158,10 +165,15 @@ const ActivityForm = ({ selectedActivity, handleCloseEditForm, handleCreateOrEdi
           </FormControl>
 
           <Stack direction={"row"} justifyContent="center" spacing={6}>
-            <Button colorScheme={"gray"} variant={"solid"} onClick={handleCloseEditForm}>
+            <Button
+              isLoading={submitting}
+              colorScheme={"gray"}
+              variant={"solid"}
+              onClick={handleCloseEditForm}
+            >
               Cancel
             </Button>
-            <Button type="submit" colorScheme={"blue"} variant={"solid"}>
+            <Button isLoading={submitting} type="submit" colorScheme={"blue"} variant={"solid"}>
               {selectedActivity ? "Edit" : "Create"}
             </Button>
           </Stack>

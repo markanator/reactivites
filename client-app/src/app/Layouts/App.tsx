@@ -1,16 +1,26 @@
-import { Box, Container, ListItem, UnorderedList, useColorModeValue } from "@chakra-ui/react";
-import { useGetAllActivities } from "../../../async/rq/activities";
-import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
-import Navbar from "./Navbar";
+import { Box, Container, useColorModeValue } from "@chakra-ui/react";
+import { v4 as uuid } from "uuid";
 import { useState } from "react";
-import { Activity } from "../models/activity";
-import { useQueryClient } from "@tanstack/react-query";
+import {
+  useCreateActivity,
+  useDeleteActivity,
+  useEditActivity,
+  useGetAllActivities,
+} from "~/async/rq/activities";
+import ActivityDashboard from "~/features/activities/dashboard/ActivityDashboard";
+import type { Activity } from "../models/activity";
+import Navbar from "./Navbar";
+import ScreenLoading from "./ScreenLoading";
 
 function App() {
-  const qc = useQueryClient();
   const { data: activities, isLoading, error } = useGetAllActivities();
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [isEditing, setIsEditing] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  const { mutateAsync: createActivityAsync } = useCreateActivity();
+  const { mutateAsync: editActivityAsync } = useEditActivity();
+  const { mutateAsync: deleteActivityAsync } = useDeleteActivity();
 
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities?.find((x) => x.id === id));
@@ -29,18 +39,33 @@ function App() {
     setIsEditing(false);
   };
 
-  const handleCreateOrEditActivity = (mutatedActivity: Activity) => {
-    setIsEditing(false);
-    setSelectedActivity(mutatedActivity);
+  const handleCreateOrEditActivity = async (mutatedActivity: Activity) => {
+    try {
+      setSubmitting(true);
+      const promiseReq = !!mutatedActivity.id ? editActivityAsync : createActivityAsync;
+      await promiseReq({ ...mutatedActivity, id: !!mutatedActivity?.id ? mutatedActivity?.id : uuid() });
+      setSelectedActivity(mutatedActivity);
+      setIsEditing(false);
+      setSubmitting(false);
+    } catch (error: any) {
+      console.warn(error?.message);
+      setSubmitting(false);
+    }
   };
 
-  const handleDeleteActivity = (id: string) => {
-    // TODO: do this
-    console.log("TODO :: DELETE ACTIVITY:: %s", id);
+  const handleDeleteActivity = async (id: string) => {
+    try {
+      setSubmitting(true);
+      await deleteActivityAsync(id);
+      setSubmitting(false);
+    } catch (error: any) {
+      console.warn(error?.message);
+      setSubmitting(false);
+    }
   };
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <ScreenLoading />;
   }
   if (error || !activities) {
     return <>An error occured!</>;
@@ -61,6 +86,7 @@ function App() {
             handleCloseEditForm={handleCloseEditForm}
             handleCreateOrEditActivity={handleCreateOrEditActivity}
             handleDeleteActivity={handleDeleteActivity}
+            submitting={submitting}
           />
         </Container>
       </Box>
