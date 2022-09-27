@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  GridItem,
   Heading,
   Image,
   Stack,
@@ -14,11 +13,12 @@ import React from "react";
 import { Activity } from "../../../app/models/activity";
 
 type Props = {
-  activity: Activity;
+  selectedActivity: Activity;
   handleCancelSelectActivity: () => void;
+  handleOpenEditForm: (id: string) => void;
 };
 
-const ActivityDetails = ({ activity, handleCancelSelectActivity }: Props) => {
+const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleOpenEditForm }: Props) => {
   return (
     <>
       <Box
@@ -32,7 +32,7 @@ const ActivityDetails = ({ activity, handleCancelSelectActivity }: Props) => {
         position="relative"
       >
         <Box bg={"gray.100"} mt={-6} mx={-6} mb={6} pos={"relative"}>
-          <Image src={`/assets/categoryImages/${activity.category}.jpg`} />
+          <Image src={`/assets/categoryImages/${selectedActivity.category}.jpg`} />
         </Box>
         <Stack>
           <Text
@@ -42,30 +42,25 @@ const ActivityDetails = ({ activity, handleCancelSelectActivity }: Props) => {
             fontSize={"sm"}
             letterSpacing={1.1}
           >
-            {activity.category}
+            {selectedActivity.category}
           </Text>
-          <Heading
-            color={useColorModeValue("gray.700", "white")}
-            fontSize={"2xl"}
-            fontFamily={"body"}
-          >
-            {activity.title}
+          <Heading color={useColorModeValue("gray.700", "white")} fontSize={"2xl"} fontFamily={"body"}>
+            {selectedActivity.title}
           </Heading>
-          <Text color={"gray.500"}>{activity.description}</Text>
+          <Text color={"gray.500"}>{selectedActivity.description}</Text>
         </Stack>
         <HStack mt={6} justifyContent={"space-between"} alignItems="center">
           <Stack direction={"row"} spacing={4} align={"center"}>
-            <Avatar
-              src={"https://avatars0.githubusercontent.com/u/1164541?v=4"}
-              size="md"
-            />
+            <Avatar src={"https://avatars0.githubusercontent.com/u/16071902?v=4"} size="md" />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
               <Text fontWeight={600}>Achim Rolle</Text>
               <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
             </Stack>
           </Stack>
           <HStack alignItems="center" justifyContent={"center"}>
-            <Button colorScheme={"blue"}>Edit</Button>
+            <Button colorScheme={"blue"} onClick={() => handleOpenEditForm(selectedActivity.id)}>
+              Edit
+            </Button>
             <Button colorScheme={"gray"} onClick={handleCancelSelectActivity}>
               cancel
             </Button>

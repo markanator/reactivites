@@ -1,9 +1,4 @@
-import {
-  GridItem,
-  ListItem,
-  SimpleGrid,
-  UnorderedList,
-} from "@chakra-ui/react";
+import { GridItem, ListItem, SimpleGrid, UnorderedList } from "@chakra-ui/react";
 import React from "react";
 import { Activity } from "../../../app/models/activity";
 import ActivityDetails from "../details/ActivityDetails";
@@ -15,6 +10,11 @@ type Props = {
   selectedActivity?: Activity;
   handleSelectActivity: (id: string) => void;
   handleCancelSelectActivity: () => void;
+  isEditing: boolean;
+  handleOpenEditForm: (id: string) => void;
+  handleCloseEditForm: () => void;
+  handleCreateOrEditActivity: (mutatedActivity: Activity) => void;
+  handleDeleteActivity: (id: string) => void;
 };
 
 const ActivityDashboard = ({
@@ -22,6 +22,11 @@ const ActivityDashboard = ({
   selectedActivity,
   handleSelectActivity,
   handleCancelSelectActivity,
+  isEditing,
+  handleOpenEditForm,
+  handleCloseEditForm,
+  handleCreateOrEditActivity,
+  handleDeleteActivity,
 }: Props) => {
   return (
     <SimpleGrid
@@ -45,6 +50,7 @@ const ActivityDashboard = ({
         <ActivityList
           activities={activities}
           handleSelectActivity={handleSelectActivity}
+          handleDeleteActivity={handleDeleteActivity}
         />
       </GridItem>
       <GridItem
@@ -52,13 +58,20 @@ const ActivityDashboard = ({
           md: 1,
         }}
       >
-        {selectedActivity && (
+        {selectedActivity && !isEditing && (
           <ActivityDetails
-            activity={selectedActivity}
+            selectedActivity={selectedActivity}
             handleCancelSelectActivity={handleCancelSelectActivity}
+            handleOpenEditForm={handleOpenEditForm}
           />
         )}
-        {selectedActivity && false && <ActivityForm />}
+        {isEditing && (
+          <ActivityForm
+            selectedActivity={selectedActivity}
+            handleCloseEditForm={handleCloseEditForm}
+            handleCreateOrEditActivity={handleCreateOrEditActivity}
+          />
+        )}
       </GridItem>
     </SimpleGrid>
   );
