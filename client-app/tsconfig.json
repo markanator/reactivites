@@ -19,8 +19,11 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
+      "~/async/*": ["./async/*"],
+      "~/app/*": ["./src/app/*"],
       "~/features/*": ["./src/features/*"],
-      "~/async/*": ["./async/*"]
+      "~/stores/*": ["./src/stores/*"],
+      "~/utils/*": ["./src/utils/*"]
     }
   },
   "include": ["src", "async"],
