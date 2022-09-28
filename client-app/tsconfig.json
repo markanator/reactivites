@@ -19,13 +19,13 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "~/async/*": ["./async/*"],
+      "~/async/*": ["src/async/*"],
       "~/app/*": ["./src/app/*"],
       "~/features/*": ["./src/features/*"],
       "~/stores/*": ["./src/stores/*"],
       "~/utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["src", "async"],
+  "include": ["src", "src/async"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
