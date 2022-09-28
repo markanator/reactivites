@@ -12,14 +12,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React from "react";
+import { useStoreContext } from "~/stores/store";
 import DesktopNav from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 
-type Props = {
-  handleOpenForm: () => void;
-};
-
-const Navbar = ({ handleOpenForm }: Props) => {
+const Navbar = () => {
+  const { activityStore } = useStoreContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -35,15 +33,25 @@ const Navbar = ({ handleOpenForm }: Props) => {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <Flex flex={{ base: 1, md: "auto" }} ml={{ base: -2 }} display={{ base: "flex", md: "none" }}>
+        <Flex
+          flex={{ base: 1, md: "auto" }}
+          ml={{ base: -2 }}
+          display={{ base: "flex", md: "none" }}
+        >
           <IconButton
             onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+            icon={
+              isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+            }
             variant={"ghost"}
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }} alignItems="center">
+        <Flex
+          flex={{ base: 1 }}
+          justify={{ base: "center", md: "start" }}
+          alignItems="center"
+        >
           <Text
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
@@ -52,13 +60,28 @@ const Navbar = ({ handleOpenForm }: Props) => {
             Reactivities
           </Text>
 
-          <Flex display={{ base: "none", md: "flex" }} alignItems="center" ml={10}>
-            <DesktopNav handleOpenForm={handleOpenForm} />
+          <Flex
+            display={{ base: "none", md: "flex" }}
+            alignItems="center"
+            ml={10}
+          >
+            <DesktopNav handleOpenForm={() => activityStore.handleOpenForm()} />
           </Flex>
         </Flex>
 
-        <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
-          <Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>
+        <Stack
+          flex={{ base: 1, md: 0 }}
+          justify={"flex-end"}
+          direction={"row"}
+          spacing={6}
+        >
+          <Button
+            as={"a"}
+            fontSize={"sm"}
+            fontWeight={400}
+            variant={"link"}
+            href={"#"}
+          >
             Sign In
           </Button>
           <Button

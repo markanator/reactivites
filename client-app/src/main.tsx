@@ -3,8 +3,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import App from "./app/Layouts/App";
+import App from "./app/App";
 import "./app/Layouts/styles.css";
+import { StoreContextProvider } from "./stores/store";
 
 const client = new QueryClient({
   defaultOptions: {
@@ -18,8 +19,10 @@ const client = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <QueryClientProvider client={client}>
     <ChakraProvider>
-      <App />
-      <ReactQueryDevtools initialIsOpen={false} />
+      <StoreContextProvider>
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </StoreContextProvider>
     </ChakraProvider>
   </QueryClientProvider>
 );

@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import type { Activity } from "../../../app/models/activity";
+import { useStoreContext } from "~/stores/store";
+import { observer } from "mobx-react-lite";
 
 const ActivityFormSchema = yup
   .object({
@@ -30,19 +32,16 @@ const ActivityFormSchema = yup
 
 type IFormData = Omit<Activity, "id">;
 
-type Props = {
-  selectedActivity?: Activity;
-  handleCloseEditForm: () => void;
-  handleCreateOrEditActivity: (mutatedActivity: Activity) => void;
-  submitting: boolean;
-};
+const ActivityForm = () => {
+  const { activityStore } = useStoreContext();
+  const {
+    selectedActivity,
+    handleCloseForm,
+    createActivity,
+    updateActivity,
+    isLoading,
+  } = activityStore;
 
-const ActivityForm = ({
-  selectedActivity,
-  handleCloseEditForm,
-  handleCreateOrEditActivity,
-  submitting,
-}: Props) => {
   const {
     register,
     handleSubmit,
@@ -53,11 +52,13 @@ const ActivityForm = ({
       ? { ...selectedActivity, date: selectedActivity?.date?.split("T")[0] }
       : {},
   });
+
   const onSubmit = (data: IFormData) => {
-    const activity = { ...data, id: selectedActivity?.id ?? "" };
-    handleCreateOrEditActivity(activity);
-    console.log({ activity });
+    selectedActivity?.id
+      ? updateActivity({ ...data, id: selectedActivity.id })
+      : createActivity(data as Activity);
   };
+
   return (
     <Box
       maxW={"600px"}
@@ -69,9 +70,18 @@ const ActivityForm = ({
       overflow={"hidden"}
       position="relative"
     >
-      <Flex as="form" onSubmit={handleSubmit(onSubmit)} p={8} flex={1} align={"center"} justify={"center"}>
+      <Flex
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        p={8}
+        flex={1}
+        align={"center"}
+        justify={"center"}
+      >
         <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Heading fontSize={"2xl"}>{selectedActivity ? "Edit" : "Create"} an Activity</Heading>
+          <Heading fontSize={"2xl"}>
+            {selectedActivity ? "Edit" : "Create"} an Activity
+          </Heading>
           <FormControl id="title" isInvalid={!!errors?.title?.message}>
             <VisuallyHidden>
               <FormLabel>Title</FormLabel>
@@ -166,14 +176,19 @@ const ActivityForm = ({
 
           <Stack direction={"row"} justifyContent="center" spacing={6}>
             <Button
-              isLoading={submitting}
+              isLoading={isLoading}
               colorScheme={"gray"}
               variant={"solid"}
-              onClick={handleCloseEditForm}
+              onClick={handleCloseForm}
             >
               Cancel
             </Button>
-            <Button isLoading={submitting} type="submit" colorScheme={"blue"} variant={"solid"}>
+            <Button
+              isLoading={isLoading}
+              type="submit"
+              colorScheme={"blue"}
+              variant={"solid"}
+            >
               {selectedActivity ? "Edit" : "Create"}
             </Button>
           </Stack>
@@ -183,4 +198,4 @@ const ActivityForm = ({
   );
 };
 
-export default ActivityForm;
+export default observer(ActivityForm);

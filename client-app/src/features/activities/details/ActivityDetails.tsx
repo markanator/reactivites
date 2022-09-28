@@ -1,24 +1,24 @@
 import {
   Avatar,
   Box,
+  Button,
   Heading,
+  HStack,
   Image,
   Stack,
-  useColorModeValue,
   Text,
-  HStack,
-  Button,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
-import { Activity } from "../../../app/models/activity";
+import { observer } from "mobx-react-lite";
+import ScreenLoading from "~/app/Layouts/ScreenLoading";
+import { useStoreContext } from "~/stores/store";
 
-type Props = {
-  selectedActivity: Activity;
-  handleCancelSelectActivity: () => void;
-  handleOpenEditForm: (id: string) => void;
-};
+const ActivityDetails = () => {
+  const { activityStore } = useStoreContext();
+  const { selectedActivity, handleOpenForm, clearSelectedActivity } =
+    activityStore;
 
-const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleOpenEditForm }: Props) => {
+  if (!selectedActivity) return <div>Loading...</div>;
   return (
     <>
       <Box
@@ -33,7 +33,10 @@ const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleO
         pos="fixed"
       >
         <Box bg={"gray.100"} mt={-6} mx={-6} mb={6} pos={"relative"}>
-          <Image src={`/assets/categoryImages/${selectedActivity.category}.jpg`} />
+          <Image
+            src={`/assets/categoryImages/${selectedActivity.category}.jpg`}
+            height={257}
+          />
         </Box>
         <Stack>
           <Text
@@ -45,24 +48,34 @@ const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleO
           >
             {selectedActivity.category}
           </Text>
-          <Heading color={useColorModeValue("gray.700", "white")} fontSize={"2xl"} fontFamily={"body"}>
+          <Heading
+            color={useColorModeValue("gray.700", "white")}
+            fontSize={"2xl"}
+            fontFamily={"body"}
+          >
             {selectedActivity.title}
           </Heading>
           <Text color={"gray.500"}>{selectedActivity.description}</Text>
         </Stack>
         <HStack mt={6} justifyContent={"space-between"} alignItems="center">
           <Stack direction={"row"} spacing={4} align={"center"}>
-            <Avatar src={"https://avatars0.githubusercontent.com/u/16071902?v=4"} size="md" />
+            <Avatar
+              src={"https://avatars0.githubusercontent.com/u/16071902?v=4"}
+              size="md"
+            />
             <Stack direction={"column"} spacing={0} fontSize={"sm"}>
               <Text fontWeight={600}>Achim Rolle</Text>
               <Text color={"gray.500"}>Feb 08, 2021 · 6min read</Text>
             </Stack>
           </Stack>
           <HStack alignItems="center" justifyContent={"center"}>
-            <Button colorScheme={"blue"} onClick={() => handleOpenEditForm(selectedActivity.id)}>
+            <Button
+              colorScheme={"blue"}
+              onClick={() => handleOpenForm(selectedActivity.id)}
+            >
               Edit
             </Button>
-            <Button colorScheme={"gray"} onClick={handleCancelSelectActivity}>
+            <Button colorScheme={"gray"} onClick={clearSelectedActivity}>
               cancel
             </Button>
           </HStack>
@@ -72,4 +85,4 @@ const ActivityDetails = ({ selectedActivity, handleCancelSelectActivity, handleO
   );
 };
 
-export default ActivityDetails;
+export default observer(ActivityDetails);
