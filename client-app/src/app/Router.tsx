@@ -1,26 +1,27 @@
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Route,
   Outlet,
+  Route,
 } from "react-router-dom";
 import ActivityDashboard from "~/features/activities/dashboard/ActivityDashboard";
+import ActivityDetails from "~/features/activities/details/ActivityDetails";
+import ActivityForm from "~/features/activities/form/ActivityForm";
 import HomePage from "~/features/home/HomePage";
 import ActivitiesLayout from "./ActivitiesLayout";
-import Layout from "./Layout";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route index element={<HomePage />} />
+    <>
+      <Route path="/" element={<HomePage />} />
       <Route path="activities" element={<ActivitiesLayout />}>
         <Route index element={<ActivityDashboard />} />
-        <Route path="create" element={<div>CREATE</div>} />
+        <Route path="create" element={<ActivityForm />} />
         <Route path=":id" element={<Outlet />}>
-          <Route path="edit" element={<div>EDITING</div>} />
-          <Route index element={<div>VIEWING</div>} />
+          <Route path="edit" element={<ActivityForm />} />
+          <Route index element={<ActivityDetails />} />
         </Route>
       </Route>
-    </Route>
+    </>
   )
 );

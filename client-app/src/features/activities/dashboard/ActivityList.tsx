@@ -11,6 +11,7 @@ import {
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import { useStoreContext } from "~/stores/store";
+import { Link } from "react-router-dom";
 
 const ActivityList = () => {
   const [target, setTarget] = useState("");
@@ -56,11 +57,7 @@ const ActivityList = () => {
                   >
                     Delete
                   </Button>
-                  <Button
-                    colorScheme={"blue"}
-                    size="sm"
-                    onClick={() => activityStore.setSelectedAcivity(id)}
-                  >
+                  <Button colorScheme={"blue"} size="sm" as={Link} to={`${id}`}>
                     View
                   </Button>
                 </HStack>

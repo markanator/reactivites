@@ -11,17 +11,32 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useStoreContext } from "~/stores/store";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const ActivityDetails = () => {
+  const navigate = useNavigate();
+  let { id } = useParams<{ id: string }>();
   const { activityStore } = useStoreContext();
-  const { selectedActivity, handleOpenForm, clearSelectedActivity } =
+  const { selectedActivity, loadActivityFromId, isLoadingInitial } =
     activityStore;
 
-  if (!selectedActivity) return <div>Loading...</div>;
+  useEffect(() => {
+    if (id) {
+      loadActivityFromId(id);
+    }
+  }, [id, loadActivityFromId]);
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+  if (isLoadingInitial || !selectedActivity) return <div>Loading...</div>;
   return (
     <>
       <Box
-        maxW={"600px"}
+        // maxW={"600px"}
         w={"full"}
         bg={useColorModeValue("white", "gray.900")}
         boxShadow={"2xl"}
@@ -29,12 +44,13 @@ const ActivityDetails = () => {
         p={6}
         overflow={"hidden"}
         position="relative"
-        pos="fixed"
       >
         <Box bg={"gray.100"} mt={-6} mx={-6} mb={6} pos={"relative"}>
           <Image
             src={`/assets/categoryImages/${selectedActivity.category}.jpg`}
-            height={257}
+            h={600}
+            w="full"
+            objectFit="cover"
           />
         </Box>
         <Stack>
@@ -68,13 +84,10 @@ const ActivityDetails = () => {
             </Stack>
           </Stack>
           <HStack alignItems="center" justifyContent={"center"}>
-            <Button
-              colorScheme={"blue"}
-              onClick={() => handleOpenForm(selectedActivity.id)}
-            >
+            <Button colorScheme={"blue"} as={Link} to="edit">
               Edit
             </Button>
-            <Button colorScheme={"gray"} onClick={clearSelectedActivity}>
+            <Button colorScheme={"gray"} onClick={handleGoBack}>
               cancel
             </Button>
           </HStack>

@@ -3,18 +3,17 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import ScreenLoading from "~/app/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
-import ActivityDetails from "../details/ActivityDetails";
-import ActivityForm from "../form/ActivityForm";
 import ActivityList from "./ActivityList";
 
 const ActivityDashboard = () => {
   const { activityStore } = useStoreContext();
-  const { loadActivities, selectedActivity, isEditing, isLoadingInitial } =
-    activityStore;
+  const { loadActivities, isLoadingInitial, activityRegistry } = activityStore;
 
   useEffect(() => {
-    loadActivities();
-  }, [activityStore]);
+    if (activityRegistry.size <= 1) {
+      loadActivities();
+    }
+  }, [activityRegistry.size, loadActivities]);
 
   if (isLoadingInitial) {
     return <ScreenLoading />;
@@ -27,7 +26,7 @@ const ActivityDashboard = () => {
         md: "grid",
       }}
       columns={{
-        md: 1,
+        md: 3,
       }}
       spacing={{
         md: 6,
@@ -36,7 +35,7 @@ const ActivityDashboard = () => {
     >
       <GridItem
         colSpan={{
-          md: 1,
+          md: 2,
         }}
         mb={8}
       >
@@ -47,8 +46,7 @@ const ActivityDashboard = () => {
           md: 1,
         }}
       >
-        {selectedActivity && !isEditing && <ActivityDetails />}
-        {isEditing && <ActivityForm />}
+        {/* FILTERING */}
       </GridItem>
     </SimpleGrid>
   );

@@ -1,15 +1,13 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "src/async/fetcher/agent";
 import type { Activity } from "~/app/models/activity";
-import { v4 as uuid } from "uuid";
-import { deleteActivity } from "~/async/v1/activities.api";
 
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
   selectedActivity: Activity | undefined = undefined;
   isEditing = false;
   isLoading = false;
-  isLoadingInitial = true;
+  isLoadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -22,12 +20,12 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
+    this.isLoadingInitial = true;
     try {
       const activitiesFromDb = await agent.Activities.list();
       runInAction(() => {
         activitiesFromDb.forEach((act) => {
-          act.date = act.date.split("T")[0];
-          this.activityRegistry.set(act.id, act);
+          this.addActivityToRegistry(act);
         });
       });
     } catch (error) {
@@ -37,27 +35,45 @@ export default class ActivityStore {
     }
   };
 
+  loadActivityFromId = async (id: string) => {
+    let activity = this.getActivityFromRegistry(id);
+    if (activity) {
+      this.selectedActivity = activity;
+      return activity;
+    } else {
+      console.log("BEGIN FETCHING");
+      this.isLoadingInitial = true;
+      try {
+        activity = await agent.Activities.details(id);
+        console.log("SUCCESS FETCHING");
+        this.addActivityToRegistry(activity);
+        this.setSelectedActivity(activity);
+        this.setLoadingInitial(false);
+        return activity;
+      } catch (error) {
+        console.log(error);
+        this.setLoadingInitial(false);
+      }
+    }
+  };
+
+  private addActivityToRegistry = (activity: Activity) => {
+    activity.date = activity.date.split("T")[0];
+    this.activityRegistry.set(activity.id, activity);
+  };
+  private getActivityFromRegistry = (id: string) => {
+    return this.activityRegistry.get(id);
+  };
+  private setSelectedActivity = (activity: Activity) => {
+    this.selectedActivity = activity;
+  };
+
   setLoadingInitial = (state: boolean) => {
     this.isLoadingInitial = state;
   };
 
-  setSelectedAcivity = (id: string) => {
-    this.selectedActivity = this.activityRegistry.get(id);
-  };
-  clearSelectedActivity = () => {
-    this.selectedActivity = undefined;
-  };
-  handleOpenForm = (id?: string) => {
-    id ? this.setSelectedAcivity(id) : this.clearSelectedActivity();
-    this.isEditing = true;
-  };
-  handleCloseForm = () => {
-    this.isEditing = false;
-  };
-
   createActivity = async (activity: Activity) => {
     this.isLoading = true;
-    activity.id = uuid();
     try {
       await agent.Activities.create(activity);
       runInAction(() => {
@@ -97,9 +113,6 @@ export default class ActivityStore {
       await agent.Activities.delete(id);
       runInAction(() => {
         this.activityRegistry.delete(id);
-        if (this.selectedActivity?.id === id) {
-          this.clearSelectedActivity();
-        }
       });
     } catch (error) {
       console.log(error);

@@ -11,12 +11,16 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import type { Activity } from "../../../app/models/activity";
-import { useStoreContext } from "~/stores/store";
 import { observer } from "mobx-react-lite";
+import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import * as yup from "yup";
+import ScreenLoading from "~/app/components/ScreenLoading";
+import { useStoreContext } from "~/stores/store";
+import type { Activity } from "../../../app/models/activity";
+import { v4 as uuid } from "uuid";
 
 const ActivityFormSchema = yup
   .object({
@@ -33,34 +37,60 @@ const ActivityFormSchema = yup
 type IFormData = Omit<Activity, "id">;
 
 const ActivityForm = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  let { id } = useParams();
   const { activityStore } = useStoreContext();
   const {
     selectedActivity,
-    handleCloseForm,
     createActivity,
     updateActivity,
-    isLoading,
+    loadActivityFromId,
+    isLoadingInitial,
   } = activityStore;
+  const isEditing = useMemo(() => pathname?.includes("edit"), [pathname]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<IFormData>({
     resolver: yupResolver(ActivityFormSchema),
-    defaultValues: selectedActivity
-      ? { ...selectedActivity, date: selectedActivity?.date?.split("T")[0] }
-      : {},
   });
 
-  const onSubmit = (data: IFormData) => {
-    selectedActivity?.id
-      ? updateActivity({ ...data, id: selectedActivity.id })
-      : createActivity(data as Activity);
+  useEffect(() => {
+    if (!!id) {
+      loadActivityFromId(id).then((activity) => {
+        if (activity) {
+          Object.keys(activity).forEach((k) =>
+            setValue(k as any, (activity as any)[k])
+          );
+        }
+      });
+    }
+  }, [id, loadActivityFromId]);
+
+  const onSubmit = async (data: IFormData) => {
+    if (isEditing && selectedActivity?.id) {
+      updateActivity({ ...data, id: selectedActivity.id });
+      navigate(`/activities/${selectedActivity.id}`);
+    } else {
+      const newAct = { ...data, id: uuid() };
+      await createActivity(newAct);
+      navigate(`/activities/${newAct.id}`);
+    }
   };
+
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
+  if (isLoadingInitial) return <ScreenLoading />;
 
   return (
     <Box
+      mx="auto"
       maxW={"600px"}
       w={"full"}
       bg={useColorModeValue("white", "gray.900")}
@@ -80,7 +110,7 @@ const ActivityForm = () => {
       >
         <Stack spacing={4} w={"full"} maxW={"md"}>
           <Heading fontSize={"2xl"}>
-            {selectedActivity ? "Edit" : "Create"} an Activity
+            {isEditing ? "Edit" : "Create"} an Activity
           </Heading>
           <FormControl id="title" isInvalid={!!errors?.title?.message}>
             <VisuallyHidden>
@@ -176,20 +206,20 @@ const ActivityForm = () => {
 
           <Stack direction={"row"} justifyContent="center" spacing={6}>
             <Button
-              isLoading={isLoading}
+              isLoading={isLoadingInitial}
               colorScheme={"gray"}
               variant={"solid"}
-              onClick={handleCloseForm}
+              onClick={handleCancel}
             >
               Cancel
             </Button>
             <Button
-              isLoading={isLoading}
+              isLoading={isLoadingInitial}
               type="submit"
               colorScheme={"blue"}
               variant={"solid"}
             >
-              {selectedActivity ? "Edit" : "Create"}
+              {isEditing ? "Edit" : "Create"}
             </Button>
           </Stack>
         </Stack>

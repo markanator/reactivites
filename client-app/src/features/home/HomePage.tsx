@@ -1,11 +1,18 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
 const HomePage = (props: Props) => {
   return (
-    <Flex justifyContent="center" alignItems="center" h="100vh">
-      <Heading>HomePage</Heading>
+    <Flex
+      flexDir="column"
+      justifyContent="center"
+      alignItems="center"
+      h="100vh"
+    >
+      <Heading mb={4}>HomePage</Heading>
+      <Link to="/activities">Go to Activites</Link>
     </Flex>
   );
 };
