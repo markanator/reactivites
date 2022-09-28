@@ -1,23 +1,21 @@
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
-  useDisclosure,
-  Flex,
   Box,
-  useColorModeValue,
-  IconButton,
-  useBreakpointValue,
-  Stack,
   Button,
   Collapse,
+  Flex,
+  IconButton,
+  Stack,
   Text,
+  useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
-import { useStoreContext } from "~/stores/store";
+import { NavLink } from "react-router-dom";
 import DesktopNav from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 
 const Navbar = () => {
-  const { activityStore } = useStoreContext();
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -53,6 +51,8 @@ const Navbar = () => {
           alignItems="center"
         >
           <Text
+            as={NavLink}
+            to="/"
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
@@ -65,7 +65,7 @@ const Navbar = () => {
             alignItems="center"
             ml={10}
           >
-            <DesktopNav handleOpenForm={() => activityStore.handleOpenForm()} />
+            <DesktopNav />
           </Flex>
         </Flex>
 

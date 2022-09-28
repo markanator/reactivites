@@ -16,7 +16,11 @@ import {
 
 export const MobileNav = () => {
   return (
-    <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
+    <Stack
+      bg={useColorModeValue("white", "gray.800")}
+      p={4}
+      display={{ md: "none" }}
+    >
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -39,7 +43,10 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           textDecoration: "none",
         }}
       >
-        <Text fontWeight={600} color={useColorModeValue("gray.600", "gray.200")}>
+        <Text
+          fontWeight={600}
+          color={useColorModeValue("gray.600", "gray.200")}
+        >
           {label}
         </Text>
         {children && (
@@ -84,10 +91,6 @@ export interface NavItem {
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: "Activities",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
-    href: "#",
+    href: "/activities",
   },
 ];

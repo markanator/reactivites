@@ -4,7 +4,7 @@ import {
   Button,
   Flex,
   Icon,
-  Link,
+  Link as CLINK,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -13,12 +13,9 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { NavItem, NAV_ITEMS } from "./MobileNav";
+import { Link, NavLink } from "react-router-dom";
 
-type Props = {
-  handleOpenForm: () => void;
-};
-
-const DesktopNav = ({ handleOpenForm }: Props) => {
+const DesktopNav = () => {
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
@@ -29,9 +26,8 @@ const DesktopNav = ({ handleOpenForm }: Props) => {
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
-              <Link
+              <CLINK
                 p={2}
-                href={navItem.href ?? "#"}
                 fontSize={"sm"}
                 fontWeight={500}
                 color={linkColor}
@@ -39,9 +35,11 @@ const DesktopNav = ({ handleOpenForm }: Props) => {
                   textDecoration: "none",
                   color: linkHoverColor,
                 }}
+                as={NavLink}
+                to={navItem.href ?? "#"}
               >
                 {navItem.label}
-              </Link>
+              </CLINK>
             </PopoverTrigger>
 
             {navItem.children && (
@@ -73,7 +71,8 @@ const DesktopNav = ({ handleOpenForm }: Props) => {
             textDecoration: "none",
             color: linkHoverColor,
           }}
-          onClick={handleOpenForm}
+          as={Link}
+          to={"/activities/create"}
         >
           Create Activity
         </Button>
@@ -84,7 +83,7 @@ const DesktopNav = ({ handleOpenForm }: Props) => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link
+    <CLINK
       href={href}
       role={"group"}
       display={"block"}
@@ -94,7 +93,11 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
-          <Text transition={"all .3s ease"} _groupHover={{ color: "pink.400" }} fontWeight={500}>
+          <Text
+            transition={"all .3s ease"}
+            _groupHover={{ color: "pink.400" }}
+            fontWeight={500}
+          >
             {label}
           </Text>
           <Text fontSize={"sm"}>{subLabel}</Text>
@@ -111,7 +114,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
         </Flex>
       </Stack>
-    </Link>
+    </CLINK>
   );
 };
 

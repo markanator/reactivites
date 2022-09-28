@@ -10,7 +10,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import ScreenLoading from "~/app/Layouts/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
 
 const ActivityDetails = () => {

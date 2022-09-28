@@ -1,14 +1,24 @@
 import { GridItem, SimpleGrid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
+import ScreenLoading from "~/app/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
-import { Activity } from "../../../app/models/activity";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
 import ActivityList from "./ActivityList";
 
 const ActivityDashboard = () => {
   const { activityStore } = useStoreContext();
-  const { selectedActivity, isEditing } = activityStore;
+  const { loadActivities, selectedActivity, isEditing, isLoadingInitial } =
+    activityStore;
+
+  useEffect(() => {
+    loadActivities();
+  }, [activityStore]);
+
+  if (isLoadingInitial) {
+    return <ScreenLoading />;
+  }
 
   return (
     <SimpleGrid
