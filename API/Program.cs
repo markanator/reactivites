@@ -22,7 +22,7 @@ namespace API
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger>();
-                logger.LogError("Error ocurred during migration");
+                logger.LogError("Error ocurred during migration ::: " + ex.Message);
 
             }
             await host.RunAsync();

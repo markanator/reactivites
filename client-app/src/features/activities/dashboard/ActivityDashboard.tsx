@@ -27,7 +27,7 @@ const ActivityDashboard = () => {
         md: "grid",
       }}
       columns={{
-        md: 2,
+        md: 1,
       }}
       spacing={{
         md: 6,
