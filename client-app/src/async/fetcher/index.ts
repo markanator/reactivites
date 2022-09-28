@@ -1,5 +1,5 @@
 import axios from "axios";
-import { sleep } from "../../src/utils/sleeper";
+import { sleep } from "../../utils/sleeper";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

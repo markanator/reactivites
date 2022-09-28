@@ -6,7 +6,7 @@ import {
   getAllActivities,
   updateActivity,
 } from "../v1/activities.api";
-import { Activity } from "../../src/app/models/activity";
+import { Activity } from "../../app/models/activity";
 
 const activityKeys = {
   all: ["activities"] as const,
