@@ -14,8 +14,6 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@hookform/resolvers": "^2.9.8",
-    "@tanstack/react-query": "^4.6.1",
-    "@tanstack/react-query-devtools": "^4.6.1",
     "axios": "^0.27.2",
     "framer-motion": "^7.4.0",
     "mobx": "^6.6.2",
@@ -23,6 +21,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.36.1",
+    "react-router-dom": "^6.4.1",
     "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },

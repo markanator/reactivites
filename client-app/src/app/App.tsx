@@ -1,18 +1,10 @@
 import { Box, Container, useColorModeValue } from "@chakra-ui/react";
-import { v4 as uuid } from "uuid";
-import { useEffect, useState } from "react";
-import {
-  useCreateActivity,
-  useDeleteActivity,
-  useEditActivity,
-  useGetAllActivities,
-} from "src/async/rq/activities";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import ActivityDashboard from "~/features/activities/dashboard/ActivityDashboard";
-import type { Activity } from "./models/activity";
+import { useStoreContext } from "~/stores/store";
 import Navbar from "./Layouts/Navbar";
 import ScreenLoading from "./Layouts/ScreenLoading";
-import { useStoreContext } from "~/stores/store";
-import { observer } from "mobx-react-lite";
 
 function App() {
   const { activityStore } = useStoreContext();
