@@ -1,0 +1,6 @@
+.react-calendar {
+  width: 100%;
+  border: none;
+  box-shadow: var(--chakra-shadows-sm);
+  font-family: "Inter", sans-serif;
+}
