@@ -7,10 +7,10 @@ function App() {
     <Flex flexDir="column">
       <Navbar />
 
-      <Box bg={useColorModeValue("gray.50", "gray.800")}>
-        <Container maxW={"8xl"} pt={4}>
-          <Outlet />
-        </Container>
+      <Box bg={useColorModeValue("gray.50", "gray.800")} h="full">
+        {/* <Container maxW={"8xl"} pt={4}> */}
+        <Outlet />
+        {/* </Container> */}
       </Box>
     </Flex>
   );

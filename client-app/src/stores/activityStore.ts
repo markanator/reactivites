@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "src/async/fetcher/agent";
-import type { Activity } from "~/app/models/activity";
-
+import type { Activity } from "~/types";
+import dayjs from "dayjs";
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
   selectedActivity: Activity | undefined = undefined;
@@ -16,6 +16,19 @@ export default class ActivityStore {
   get activitiesByDate() {
     return Array.from(this.activityRegistry.values()).sort(
       (a, b) => Date.parse(a.date) - Date.parse(b.date)
+    );
+  }
+
+  get groupedActivities() {
+    return Object.entries(
+      this.activitiesByDate.reduce((activityObj, act) => {
+        const dateKey = dayjs(act.date).format("MMMM, YYYY");
+        console.log({ dateKey, date: act.date });
+        activityObj[dateKey] = activityObj[dateKey]
+          ? [...activityObj[dateKey], act]
+          : [act];
+        return activityObj;
+      }, {} as { [key: string]: Activity[] })
     );
   }
 

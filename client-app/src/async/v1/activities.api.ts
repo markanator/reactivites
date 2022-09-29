@@ -1,4 +1,4 @@
-import { Activity } from "../../app/models/activity";
+import { Activity } from "~/types";
 import axios from "../fetcher/index";
 
 export const getAllActivities = <T>() => {

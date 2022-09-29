@@ -1,70 +1,26 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Stack,
-  Tag,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
+import React, { Fragment } from "react";
 import { useStoreContext } from "~/stores/store";
-import { Link } from "react-router-dom";
+import ActivityListItem from "./ActivityListItem";
 
 const ActivityList = () => {
-  const [target, setTarget] = useState("");
   const { activityStore } = useStoreContext();
-  const { activitiesByDate, deleteActivity, isLoading } = activityStore;
-
-  const handleActivityDelete = (
-    e: React.SyntheticEvent<HTMLButtonElement>,
-    id: string
-  ) => {
-    setTarget(e.currentTarget.name);
-    deleteActivity(id);
-  };
+  const { groupedActivities } = activityStore;
 
   return (
     <>
       <Stack spacing={8} mx={"auto"}>
-        {activitiesByDate?.map(
-          ({ category, city, date, description, id, title, venue }) => (
-            <Box
-              key={id}
-              rounded={"lg"}
-              bg={useColorModeValue("white", "gray.700")}
-              boxShadow={"lg"}
-              p={6}
-            >
-              <Heading fontSize="2xl">{title}</Heading>
-              <Text mt={1} fontSize="sm" color={"gray.500"}>
-                {new Date(date).toLocaleDateString()}
-              </Text>
-              <Text mt={2}>{description}</Text>
-              <Text mt={1}>{city + ", " + venue}</Text>
-              <HStack justifyContent={"space-between"} mt={4}>
-                <Tag>{category}</Tag>
-                <HStack spacing={4}>
-                  <Button
-                    name={id}
-                    colorScheme={"red"}
-                    variant="outline"
-                    size="sm"
-                    onClick={(evt) => handleActivityDelete(evt, id)}
-                    isLoading={isLoading && target === id}
-                  >
-                    Delete
-                  </Button>
-                  <Button colorScheme={"blue"} size="sm" as={Link} to={`${id}`}>
-                    View
-                  </Button>
-                </HStack>
-              </HStack>
-            </Box>
-          )
-        )}
+        {groupedActivities.map(([group, list]) => (
+          <Fragment key={group}>
+            <Heading fontSize="2xl">{group}</Heading>
+            <Stack spacing={8} mx={"auto"}>
+              {list?.map((act) => (
+                <ActivityListItem activity={act} key={act.id} />
+              ))}
+            </Stack>
+          </Fragment>
+        ))}
       </Stack>
     </>
   );

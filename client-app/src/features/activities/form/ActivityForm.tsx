@@ -19,7 +19,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import ScreenLoading from "~/app/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
-import type { Activity } from "../../../app/models/activity";
+import type { Activity } from "~/types";
 import { v4 as uuid } from "uuid";
 
 const ActivityFormSchema = yup
