@@ -10,7 +10,7 @@ import { StoreContextProvider } from "./stores/store";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <>
     <StoreContextProvider>
-      <ChakraProvider>
+      <ChakraProvider resetCSS>
         <RouterProvider router={router} />
       </ChakraProvider>
     </StoreContextProvider>
