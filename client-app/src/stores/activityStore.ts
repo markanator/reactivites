@@ -23,7 +23,6 @@ export default class ActivityStore {
     return Object.entries(
       this.activitiesByDate.reduce((activityObj, act) => {
         const dateKey = dayjs(act.date).format("MMMM, YYYY");
-        console.log({ dateKey, date: act.date });
         activityObj[dateKey] = activityObj[dateKey]
           ? [...activityObj[dateKey], act]
           : [act];
@@ -42,7 +41,7 @@ export default class ActivityStore {
         });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       this.setLoadingInitial(false);
     }
@@ -54,17 +53,15 @@ export default class ActivityStore {
       this.selectedActivity = activity;
       return activity;
     } else {
-      console.log("BEGIN FETCHING");
       this.isLoadingInitial = true;
       try {
         activity = await agent.Activities.details(id);
-        console.log("SUCCESS FETCHING");
         this.addActivityToRegistry(activity);
         this.setSelectedActivity(activity);
         this.setLoadingInitial(false);
         return activity;
       } catch (error) {
-        console.log(error);
+        console.error(error);
         this.setLoadingInitial(false);
       }
     }
@@ -95,7 +92,7 @@ export default class ActivityStore {
         this.isEditing = false;
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       runInAction(() => {
         this.isLoading = false;
@@ -112,7 +109,7 @@ export default class ActivityStore {
         this.isEditing = false;
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       runInAction(() => {
         this.isLoading = false;
@@ -128,7 +125,7 @@ export default class ActivityStore {
         this.activityRegistry.delete(id);
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       runInAction(() => {
         this.isLoading = false;

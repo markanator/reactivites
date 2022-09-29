@@ -1,28 +1,13 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  HStack,
-  Image,
-  Stack,
-  Text,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Container, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useStoreContext } from "~/stores/store";
-import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import ScreenLoading from "~/app/components/ScreenLoading";
+import { useStoreContext } from "~/stores/store";
+import ActivityDetailedChat from "./ActivityDetailedChat";
 import ActivityDetailedHeader from "./ActivityDetailedHeader";
 import ActivityDetailedInfo from "./ActivityDetailedInfo";
-import ActivityDetailedChat from "./ActivityDetailedChat";
 import ActivityDetailedSideBar from "./ActivityDetailedSideBar";
-import ScreenLoading from "~/app/components/ScreenLoading";
 
 const ActivityDetails = () => {
   let { id } = useParams<{ id: string }>();
