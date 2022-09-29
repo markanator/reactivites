@@ -23,7 +23,7 @@ const ActivityDetails = () => {
 
   if (isLoadingInitial || !selectedActivity) return <ScreenLoading />;
   return (
-    <Flex flexDir="column" h="full">
+    <Flex flexDir="column" h="full" pb={20}>
       <ActivityDetailedHeader activity={selectedActivity} />
       <Container maxW={"8xl"} pt={4}>
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
