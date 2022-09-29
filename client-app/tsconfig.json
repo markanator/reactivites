@@ -5,7 +5,7 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "alwaysStrict": true,
@@ -19,11 +19,7 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "~/async/*": ["src/async/*"],
-      "~/app/*": ["./src/app/*"],
-      "~/features/*": ["./src/features/*"],
-      "~/stores/*": ["./src/stores/*"],
-      "~/utils/*": ["./src/utils/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["src", "src/async"],
