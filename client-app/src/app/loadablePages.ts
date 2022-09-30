@@ -11,3 +11,8 @@ export const ActivityForm = loadable(
 );
 export const HomePage = loadable(() => import("~/features/home/HomePage"));
 export const ActivitiesLayout = loadable(() => import("./ActivitiesLayout"));
+
+// ERROR
+export const TestErrorsPage = loadable(
+  () => import("~/features/errors/TestError")
+);
