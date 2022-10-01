@@ -2,39 +2,27 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   Stack,
-  Textarea,
   useColorModeValue,
-  VisuallyHidden,
 } from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Form, Formik, FormikProps } from "formik";
 import { observer } from "mobx-react-lite";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import * as yup from "yup";
-import ScreenLoading from "~/app/components/ScreenLoading";
-import { useStoreContext } from "~/stores/store";
-import type { Activity } from "~/types";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
-
-const ActivityFormSchema = yup
-  .object({
-    id: yup.string().optional(),
-    title: yup.string().required(),
-    date: yup.string().required(),
-    description: yup.string().required(),
-    category: yup.string().required(),
-    city: yup.string().required(),
-    venue: yup.string().required(),
-  })
-  .required();
-
-type IFormData = Omit<Activity, "id">;
+import ScreenLoading from "~/app/components/ScreenLoading";
+import InputField from "~/components/forms/Input";
+import InputDate from "~/components/forms/InputDate";
+import InputSelect from "~/components/forms/InputSelect";
+import InputTextArea from "~/components/forms/InputTextArea";
+import { useStoreContext } from "~/stores/store";
+import { Activity } from "~/types";
+import {
+  ActivityFormSchema,
+  categoryOptions,
+  initialState,
+} from "./form.helpers";
 
 const ActivityForm = () => {
   const navigate = useNavigate();
@@ -45,51 +33,37 @@ const ActivityForm = () => {
     selectedActivity,
     createActivity,
     updateActivity,
+    clearSelectedActivity,
     loadActivityFromId,
     isLoadingInitial,
   } = activityStore;
-  const isEditing = useMemo(() => pathname?.includes("edit"), [pathname]);
+  const isEditing = useMemo(() => pathname?.includes("manage"), [pathname]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<IFormData>({
-    resolver: yupResolver(ActivityFormSchema),
-  });
-
-  useEffect(() => {
-    if (!!id) {
-      loadActivityFromId(id).then((activity) => {
-        if (activity) {
-          Object.keys(activity).forEach((k) =>
-            setValue(k as any, (activity as any)[k])
-          );
-        }
-      });
-    }
-  }, [id, loadActivityFromId]);
-
-  const onSubmit = async (data: IFormData) => {
+  const onSubmit = async (values: Activity) => {
+    // console.log({ isEditing, ...values, id: id ?? "" });
     if (isEditing && selectedActivity?.id) {
-      updateActivity({ ...data, id: selectedActivity.id });
-      navigate(`/activities/${selectedActivity.id}`);
+      updateActivity({ ...values, id: selectedActivity?.id });
+      navigate(`/activities/${selectedActivity?.id}`);
     } else {
-      const newAct = { ...data, id: uuid() };
+      const newAct = { ...values, id: uuid() };
       await createActivity(newAct);
       navigate(`/activities/${newAct.id}`);
     }
   };
 
-  const handleCancel = () => {
-    navigate(-1);
-  };
+  useEffect(() => {
+    if (!!id) {
+      loadActivityFromId(id);
+    } else {
+      clearSelectedActivity();
+    }
+  }, [id, loadActivityFromId]);
 
   if (isLoadingInitial) return <ScreenLoading />;
 
   return (
     <Box
+      my={20}
       mx="auto"
       maxW={"600px"}
       w={"full"}
@@ -100,130 +74,59 @@ const ActivityForm = () => {
       overflow={"hidden"}
       position="relative"
     >
-      <Flex
-        as="form"
-        onSubmit={handleSubmit(onSubmit)}
-        p={8}
-        flex={1}
-        align={"center"}
-        justify={"center"}
+      <Formik
+        enableReinitialize
+        initialValues={selectedActivity ?? initialState}
+        validationSchema={ActivityFormSchema}
+        onSubmit={onSubmit}
       >
-        <Stack spacing={4} w={"full"} maxW={"md"}>
-          <Heading fontSize={"2xl"}>
-            {isEditing ? "Edit" : "Create"} an Activity
-          </Heading>
-          <FormControl id="title" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>Title</FormLabel>
-            </VisuallyHidden>
-            <Input
-              placeholder="Title"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              {...register("title")}
-            />
-          </FormControl>
-          <FormControl id="description" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>description</FormLabel>
-            </VisuallyHidden>
-            <Textarea
-              placeholder="Description"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              {...register("description")}
-            />
-          </FormControl>
-          <FormControl id="category" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>category</FormLabel>
-            </VisuallyHidden>
-            <Input
-              placeholder="Category"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              {...register("category")}
-            />
-          </FormControl>
-          <FormControl id="date" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>date</FormLabel>
-            </VisuallyHidden>
-            <Input
-              placeholder="Date"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              type="date"
-              {...register("date")}
-            />
-          </FormControl>
-          <FormControl id="city" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>City</FormLabel>
-            </VisuallyHidden>
-            <Input
-              placeholder="City"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              {...register("city")}
-            />
-          </FormControl>
-          <FormControl id="venue" isInvalid={!!errors?.title?.message}>
-            <VisuallyHidden>
-              <FormLabel>venue</FormLabel>
-            </VisuallyHidden>
-            <Input
-              placeholder="Venue"
-              bg={"gray.100"}
-              border={0}
-              color={"gray.700"}
-              _placeholder={{
-                color: "gray.600",
-              }}
-              {...register("venue")}
-            />
-          </FormControl>
-
-          <Stack direction={"row"} justifyContent="center" spacing={6}>
-            <Button
-              isLoading={isLoadingInitial}
-              colorScheme={"gray"}
-              variant={"solid"}
-              onClick={handleCancel}
-            >
-              Cancel
-            </Button>
-            <Button
-              isLoading={isLoadingInitial}
-              type="submit"
-              colorScheme={"blue"}
-              variant={"solid"}
-            >
-              {isEditing ? "Edit" : "Create"}
-            </Button>
-          </Stack>
-        </Stack>
-      </Flex>
+        {({ isSubmitting, dirty, isValid }: FormikProps<Activity>) => (
+          <Form>
+            <Flex p={8} flex={1} align={"center"} justify={"center"}>
+              <Stack spacing={4} w={"full"} maxW={"md"}>
+                <Heading fontSize={"2xl"}>
+                  {isEditing ? "Edit" : "Create"} an Activity
+                </Heading>
+                <InputField name="title" />
+                <InputTextArea name="description" />
+                <InputSelect name="category" options={categoryOptions} />
+                <InputDate
+                  name="date"
+                  showTimeSelect
+                  timeCaption="time"
+                  dateFormat={"MMMM d, yyyy h:mm aa"}
+                />
+                <InputField name="city" />
+                <InputField name="venue" />
+                <Stack direction={"row"} justifyContent="center" spacing={6}>
+                  <Button
+                    isLoading={isLoadingInitial}
+                    colorScheme={"gray"}
+                    variant={"solid"}
+                    as={Link}
+                    to={
+                      isEditing
+                        ? `/activities/${selectedActivity?.id}`
+                        : "/activities"
+                    }
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    isLoading={isLoadingInitial}
+                    disabled={isSubmitting || !dirty || !isValid}
+                    type="submit"
+                    colorScheme={"blue"}
+                    variant={"solid"}
+                  >
+                    {isEditing ? "Edit" : "Submit"}
+                  </Button>
+                </Stack>
+              </Stack>
+            </Flex>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 };

@@ -11,6 +11,7 @@ import { MapPinIcon, ClockIcon, TagIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { Link } from "react-router-dom";
 import CalendarDate from "~/components/CalendarDate";
 import { Activity } from "~/types";
 
@@ -70,7 +71,13 @@ const ActivityDetailedHeader = ({ activity }: Props) => {
             <Button w="full" colorScheme="yellow" size="lg">
               Cancel Attendance
             </Button>
-            <Button w="full" colorScheme="orange" size="md">
+            <Button
+              w="full"
+              colorScheme="orange"
+              size="md"
+              as={Link}
+              to={`/activities/${activity.id}/manage`}
+            >
               Manage Event
             </Button>
           </VStack>
