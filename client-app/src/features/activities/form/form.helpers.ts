@@ -20,7 +20,7 @@ export const initialState: Activity = {
   title: "",
   description: "",
   category: "",
-  date: "",
+  date: new Date(),
   city: "",
   venue: "",
 };

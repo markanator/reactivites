@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
-import Navbar from "./components/Navbar";
 import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const Layout = () => {
   return (
