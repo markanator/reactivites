@@ -11,7 +11,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import DesktopNav from "./DesktopNav";
 import { MobileNav } from "./MobileNav";
 
@@ -76,11 +76,11 @@ const Navbar = () => {
           spacing={6}
         >
           <Button
-            as={"a"}
+            as={Link}
             fontSize={"sm"}
             fontWeight={400}
             variant={"link"}
-            href={"#"}
+            to={"/login"}
           >
             Sign In
           </Button>

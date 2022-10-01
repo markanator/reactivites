@@ -14,7 +14,7 @@ const HomePage = (props: Props) => {
       h="100vh"
     >
       <Heading mb={4}>HomePage</Heading>
-      <Link to="/activities">Go to Activites</Link>
+      <Link to="/login">Login</Link>
     </Flex>
   );
 };

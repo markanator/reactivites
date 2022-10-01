@@ -22,3 +22,10 @@ export interface ServerError {
   message: string;
   details: string;
 }
+
+export interface User {
+  username: string;
+  displayName: string;
+  token: string;
+  image?: string;
+}

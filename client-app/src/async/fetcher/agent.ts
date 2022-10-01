@@ -1,5 +1,6 @@
 import { AxiosResponse } from "axios";
-import { Activity } from "~/types";
+import { UserFormValues } from "~/features/users/utils";
+import { Activity, User } from "~/types";
 import axios from "./index";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
@@ -22,8 +23,23 @@ const Activities = {
   delete: (id: string) => requests.del<void>(`/activities/${id}`),
 };
 
+const Account = {
+  current: () => requests.get<User>("/account"),
+  login: (user: UserFormValues) => requests.post<User>("/account/login", user),
+  register: (user: UserFormValues) =>
+    requests.post<User>("/account/register", user),
+  // fbLogin: (accessToken: string) => requests
+  //     .post<User>(`/account/fbLogin?accessToken=${accessToken}`, {}),
+  // refreshToken: () => requests.post<User>('/account/refreshToken', {}),
+  // verifyEmail: (token: string, email: string) =>
+  //     requests.post<void>(`/account/verifyEmail?token=${token}&email=${email}`, {}),
+  // resendEmailConfirm: (email: string) =>
+  //     requests.get(`/account/resendEmailConfirmationLink?email=${email}`)
+};
+
 const agent = {
   Activities,
+  Account,
 };
 
 export default agent;

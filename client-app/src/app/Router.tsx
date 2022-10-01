@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import NotFound from "~/features/errors/NotFound";
 import ServerError from "~/features/errors/ServerError";
+import LoginForm from "~/features/users/LoginForm";
 import * as Loaded from "./loadablePages";
 
 export const router = createBrowserRouter(
@@ -24,6 +25,7 @@ export const router = createBrowserRouter(
           </Route>
         </Route>
         <Route element={<Loaded.ActivitiesLayout />}>
+          <Route path="login" element={<LoginForm />} />
           <Route path="test-errors" element={<Loaded.TestErrorsPage />} />
           <Route path="server-error" element={<ServerError />} />
           <Route path="*" element={<NotFound />} />
