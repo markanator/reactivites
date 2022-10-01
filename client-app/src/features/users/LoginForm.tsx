@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Container,
   Heading,
@@ -32,13 +33,7 @@ const LoginForm = (props: Props) => {
     });
   };
   return (
-    <Container
-      mx={"auto"}
-      padding={10}
-      borderRadius="md"
-      bgColor={useColorModeValue("white", "gray.700")}
-      my={40}
-    >
+    <Box bgColor={useColorModeValue("white", "gray.700")} py={6}>
       <Formik
         initialValues={{ email: "", password: "", error: null }}
         onSubmit={onSubmit}
@@ -46,7 +41,7 @@ const LoginForm = (props: Props) => {
         {({ handleSubmit, isSubmitting }: FormikProps<any>) => (
           <Form onSubmit={handleSubmit}>
             <VStack spacing={6}>
-              <Heading>Login</Heading>
+              <Heading>Login to Reactivities</Heading>
               <InputField name="email" type="email" />
               <InputField name="password" type="password" />
               <ErrorMessage name="error" />
@@ -57,7 +52,7 @@ const LoginForm = (props: Props) => {
           </Form>
         )}
       </Formik>
-    </Container>
+    </Box>
   );
 };
 

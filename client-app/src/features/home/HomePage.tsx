@@ -1,7 +1,9 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "~/stores/store";
+import LoginModal from "../users/LoginModal";
+import RegisterModal from "../users/RegisterModal";
 
 type Props = {};
 
@@ -24,7 +26,10 @@ const HomePage = (props: Props) => {
           <Link to="/activities">Go to activities!</Link>
         </>
       ) : (
-        <Link to="/login">Login</Link>
+        <Stack spacing={6}>
+          <LoginModal />
+          <RegisterModal />
+        </Stack>
       )}
     </Flex>
   );

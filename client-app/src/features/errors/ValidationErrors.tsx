@@ -2,15 +2,15 @@ import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
 import React from "react";
 
 type Props = {
-  errors?: string[];
+  errors?: any;
 };
 
 const ValidationErrors = ({ errors }: Props) => {
   return (
     <Stack mt={4}>
       {errors &&
-        errors.map((er) => (
-          <Alert key={er} status="error" variant="subtle">
+        errors?.map((er: any, idx: any) => (
+          <Alert key={idx} status="error" variant="subtle">
             <AlertIcon />
             {er}
           </Alert>

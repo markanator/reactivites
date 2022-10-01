@@ -20,10 +20,9 @@ export default class UserStore {
       console.log("USER FROM LOGIN", user);
       store.commonStore.setToken(user.token);
       // this.startRefreshTokenTimer(user);
-      // requred to mutate mobx
+      // required to mutate mobx, in async block
       runInAction(() => (this.user = user));
       window?.navigate("/activities");
-      // store.modalStore.closeModal();
     } catch (error) {
       throw error;
     }
@@ -44,6 +43,15 @@ export default class UserStore {
       // this.startRefreshTokenTimer(user);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  register = async (creds: UserFormValues) => {
+    try {
+      await agent.Account.register(creds);
+      window?.navigate(`/account/registerSuccess?email=${creds.email}`);
+    } catch (error) {
+      throw error;
     }
   };
 }
