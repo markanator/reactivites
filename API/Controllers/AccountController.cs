@@ -45,11 +45,13 @@ namespace API.Controllers
         {
             if (await userManager.Users.AnyAsync(x => x.Email == regDto.Email))
             {
-                return BadRequest("Email taken");
+                ModelState.AddModelError("email", "Email is already taken.");
+                return ValidationProblem();
             }
             if (await userManager.Users.AnyAsync(x => x.UserName == regDto.UserName))
             {
-                return BadRequest("UserName taken");
+                ModelState.AddModelError("username", "Username is already taken.");
+                return ValidationProblem();
             }
             var user = new AppUser
             {
@@ -72,6 +74,7 @@ namespace API.Controllers
         {
             var user = await userManager.Users
                 .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+            if (user == null) return Unauthorized();
             //await SetRefreshToken(user);
             return CreateUserObject(user);
         }
