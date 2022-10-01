@@ -9,6 +9,5 @@
         public Activity Activity { get; set; }
         // custom code not made automatically be EF
         public bool IsHost { get; set; }
-
     }
 }

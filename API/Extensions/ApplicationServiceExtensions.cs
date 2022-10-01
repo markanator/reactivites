@@ -1,5 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
+using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -32,6 +34,8 @@ namespace API.Extensions
 
             // Cleaner code when mapping to DB
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            // add ability to get user from anywhere
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }
