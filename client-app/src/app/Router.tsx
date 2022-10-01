@@ -3,19 +3,13 @@ import {
   createRoutesFromElements,
   Outlet,
   Route,
-  Navigate,
-  Routes,
 } from "react-router-dom";
-import NotFound from "~/features/errors/NotFound";
-import ServerError from "~/features/errors/ServerError";
-import LoginForm from "~/features/users/LoginForm";
-import App from "./App";
 import * as Loaded from "./loadablePages";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<App />}>
+      <Route path="/" element={<Loaded.App />}>
         <Route index element={<Loaded.HomePage />} />
         <Route path="activities" element={<Loaded.ActivitiesLayout />}>
           <Route index element={<Loaded.ActivityDashboard />} />
@@ -26,10 +20,10 @@ export const router = createBrowserRouter(
           </Route>
         </Route>
         <Route element={<Loaded.ActivitiesLayout />}>
-          <Route path="login" element={<LoginForm />} />
+          <Route path="login" element={<Loaded.LoginPage />} />
           <Route path="test-errors" element={<Loaded.TestErrorsPage />} />
-          <Route path="server-error" element={<ServerError />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="server-error" element={<Loaded.ServerError />} />
+          <Route path="*" element={<Loaded.NotFound />} />
         </Route>
       </Route>
     </>

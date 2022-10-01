@@ -17,7 +17,7 @@ const ActivityDashboard = () => {
   }, [activityRegistry.size, loadActivities]);
 
   if (isLoadingInitial) {
-    return <ScreenLoading />;
+    return <ScreenLoading content="Loading activities..." />;
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 
 type Props = {
   inverted?: boolean;
@@ -8,6 +8,7 @@ type Props = {
 const ScreenLoading = ({ inverted = true, content = "Loading..." }: Props) => {
   return (
     <Flex
+      flexDir="column"
       justifyContent="center"
       alignItems="center"
       position="absolute"
@@ -17,7 +18,14 @@ const ScreenLoading = ({ inverted = true, content = "Loading..." }: Props) => {
       w="100vw"
       h="100vh"
     >
-      <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+      />
+      <Text>{content}</Text>
     </Flex>
   );
 };

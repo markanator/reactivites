@@ -1,10 +1,19 @@
 import { useToast } from "@chakra-ui/react";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { store } from "~/stores/store";
 import { sleep } from "../../utils/sleeper";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
+});
+
+instance.interceptors.request.use((config: AxiosRequestConfig<any>) => {
+  const token = store.commonStore.token;
+  if (token) {
+    config.headers!.authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 instance.interceptors.response.use(
