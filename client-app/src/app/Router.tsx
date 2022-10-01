@@ -9,12 +9,13 @@ import {
 import NotFound from "~/features/errors/NotFound";
 import ServerError from "~/features/errors/ServerError";
 import LoginForm from "~/features/users/LoginForm";
+import App from "./App";
 import * as Loaded from "./loadablePages";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="/" element={<Outlet />}>
+      <Route path="/" element={<App />}>
         <Route index element={<Loaded.HomePage />} />
         <Route path="activities" element={<Loaded.ActivitiesLayout />}>
           <Route index element={<Loaded.ActivityDashboard />} />
