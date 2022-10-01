@@ -18,9 +18,19 @@ instance.interceptors.response.use(
     }
   },
   (err: AxiosError<any>) => {
-    const { data, status } = err.response!;
+    const { data, status, config } = err.response!;
     switch (status) {
       case 400:
+        if (typeof data === "string") {
+          window?.toast({
+            status: "error",
+            title: "Bad request, try again later.",
+            position: "bottom-right",
+          });
+        }
+        if (config.method === "get" && data?.errors.hasOwnProperty("id")) {
+          window?.navigate("/not-found");
+        }
         if (data?.errors) {
           const modalStateError = [];
           for (const key in data?.errors) {
@@ -29,12 +39,6 @@ instance.interceptors.response.use(
             }
           }
           throw modalStateError.flat();
-        } else {
-          window?.toast({
-            status: "error",
-            title: "Bad request, try again later.",
-            position: "bottom-right",
-          });
         }
         break;
       case 401:
