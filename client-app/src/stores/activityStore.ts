@@ -15,7 +15,7 @@ export default class ActivityStore {
 
   get activitiesByDate() {
     return Array.from(this.activityRegistry.values()).sort(
-      (a, b) => Date.parse(a.date) - Date.parse(b.date)
+      (a, b) => a.date.getTime() - b.date.getTime()
     );
   }
 
@@ -68,14 +68,19 @@ export default class ActivityStore {
   };
 
   private addActivityToRegistry = (activity: Activity) => {
-    activity.date = activity.date.split("T")[0];
+    // activity.date = activity.date.split("T")[0];
+    activity.date = new Date(activity.date);
     this.activityRegistry.set(activity.id, activity);
   };
   private getActivityFromRegistry = (id: string) => {
     return this.activityRegistry.get(id);
   };
   private setSelectedActivity = (activity: Activity) => {
+    activity.date = new Date(activity.date);
     this.selectedActivity = activity;
+  };
+  clearSelectedActivity = () => {
+    this.selectedActivity = undefined;
   };
 
   setLoadingInitial = (state: boolean) => {

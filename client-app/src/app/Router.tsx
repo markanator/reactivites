@@ -19,7 +19,7 @@ export const router = createBrowserRouter(
           <Route index element={<Loaded.ActivityDashboard />} />
           <Route path="create" element={<Loaded.ActivityForm />} />
           <Route path=":id" element={<Outlet />}>
-            <Route path="edit" element={<Loaded.ActivityForm />} />
+            <Route path="manage" element={<Loaded.ActivityForm />} />
             <Route index element={<Loaded.ActivityDetails />} />
           </Route>
         </Route>
