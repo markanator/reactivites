@@ -1,10 +1,7 @@
-import React from "react";
-import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useAttachScripts } from "~/app/hooks/useAttachScripts";
 
 const NotFound = () => {
-  useAttachScripts();
   return (
     <Box textAlign="center" py={10} px={6}>
       <Heading

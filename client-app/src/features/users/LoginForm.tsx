@@ -1,5 +1,12 @@
-import { Button, Container, Text, VStack } from "@chakra-ui/react";
-import { Form, Formik, FormikHelpers, FormikProps } from "formik";
+import {
+  Button,
+  Container,
+  Heading,
+  Text,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
+import { ErrorMessage, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import InputField from "~/components/forms/Input";
@@ -25,18 +32,24 @@ const LoginForm = (props: Props) => {
     });
   };
   return (
-    <Container mx={"auto"} padding={10} bgColor="white" my={40}>
+    <Container
+      mx={"auto"}
+      padding={10}
+      borderRadius="md"
+      bgColor={useColorModeValue("white", "gray.700")}
+      my={40}
+    >
       <Formik
         initialValues={{ email: "", password: "", error: null }}
         onSubmit={onSubmit}
       >
-        {({ handleSubmit, isSubmitting, errors }: FormikProps<any>) => (
+        {({ handleSubmit, isSubmitting }: FormikProps<any>) => (
           <Form onSubmit={handleSubmit}>
-            <VStack>
+            <VStack spacing={6}>
+              <Heading>Login</Heading>
               <InputField name="email" type="email" />
               <InputField name="password" type="password" />
-              {/* @ts-expect-error */}
-              <Text>{errors?.error}</Text>
+              <ErrorMessage name="error" />
               <Button type="submit" disabled={isSubmitting}>
                 Login
               </Button>

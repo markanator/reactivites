@@ -1,19 +1,15 @@
-import React from "react";
 import {
+  Button,
   ButtonGroup,
+  Container,
   Heading,
   HStack,
-  Button,
-  Container,
-  useToast,
 } from "@chakra-ui/react";
-import axios from "~/async/fetcher";
 import { useState } from "react";
+import axios from "~/async/fetcher";
 import ValidationErrors from "./ValidationErrors";
-import { useAttachScripts } from "~/app/hooks/useAttachScripts";
 
 export default function TestErrors() {
-  useAttachScripts();
   const [errors, setErrs] = useState(null);
   const handleNotFound = () => {
     axios.get("buggy/not-found").catch((err) => console.log(err.response));

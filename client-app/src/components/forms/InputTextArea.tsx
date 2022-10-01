@@ -5,6 +5,7 @@ import {
   Textarea,
   FormErrorMessage,
   TextareaProps,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React from "react";
@@ -24,7 +25,7 @@ const InputTextArea = ({ name, ...rest }: Props) => {
       </VisuallyHidden>
       <Textarea
         placeholder={name}
-        bg={"gray.100"}
+        bgColor={useColorModeValue("gray.100", "gray.300")}
         border={0}
         color={"gray.700"}
         resize="vertical"

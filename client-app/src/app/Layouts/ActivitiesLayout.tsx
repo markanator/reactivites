@@ -1,10 +1,8 @@
 import { Box, Flex, Link, Text, useColorModeValue } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import { useAttachScripts } from "./hooks/useAttachScripts";
+import Navbar from "../components/Navbar";
 
 function App() {
-  useAttachScripts();
   return (
     <Flex flexDir="column">
       <Navbar />

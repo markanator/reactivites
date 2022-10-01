@@ -6,21 +6,20 @@ import { useAttachScripts } from "~/app/hooks/useAttachScripts";
 import { useStoreContext } from "~/stores/store";
 
 const ServerError = () => {
-  useAttachScripts();
-  const { commentStore } = useStoreContext();
+  const { commonStore } = useStoreContext();
   return (
     <Container display="flex" flexDir="column" alignItems="center">
       <Heading my={8}>Server Error</Heading>
       <Heading as="h5" fontSize="xl">
-        {commentStore.error?.message}
+        {commonStore.error?.message}
       </Heading>
-      {commentStore.error?.details && (
+      {commonStore.error?.details && (
         <Flex flexDir="column" as={Link} to="/activities">
           <Heading as="h6" fontSize="2xl">
             Stack Trace
           </Heading>
           <Flex as="code" mt={8}>
-            {commentStore.error?.details}
+            {commonStore.error?.details}
           </Flex>
         </Flex>
       )}

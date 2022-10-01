@@ -5,6 +5,7 @@ import {
   Input,
   FormErrorMessage,
   InputProps,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React from "react";
@@ -24,7 +25,7 @@ const InputField = (props: Props) => {
       </VisuallyHidden>
       <Input
         placeholder={props.name}
-        bg={"gray.100"}
+        bg={useColorModeValue("gray.100", "gray.300")}
         border={0}
         color={"gray.700"}
         _placeholder={{

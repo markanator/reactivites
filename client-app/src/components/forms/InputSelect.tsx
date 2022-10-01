@@ -5,6 +5,7 @@ import {
   Select,
   FormErrorMessage,
   SelectProps,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React from "react";
@@ -25,10 +26,8 @@ const InputSelect = ({ name, options, ...rest }: Props) => {
         <FormLabel>{name}</FormLabel>
       </VisuallyHidden>
       <Select
-        _placeholder={{
-          color: "gray.600",
-          textTransform: "capitalize",
-        }}
+        bgColor={useColorModeValue("gray.100", "gray.300")}
+        color={"black"}
         placeholder={`Select a ${name}`}
         {...rest}
         {...field}

@@ -1,11 +1,15 @@
 import { Flex, Heading } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAttachScripts } from "~/app/hooks/useAttachScripts";
+import { observer } from "mobx-react-lite";
+import { Link } from "react-router-dom";
+import { useStoreContext } from "~/stores/store";
 
 type Props = {};
 
 const HomePage = (props: Props) => {
-  useAttachScripts();
+  const {
+    userStore: { isLoggedIn },
+  } = useStoreContext();
+
   return (
     <Flex
       flexDir="column"
@@ -13,10 +17,17 @@ const HomePage = (props: Props) => {
       alignItems="center"
       h="100vh"
     >
-      <Heading mb={4}>HomePage</Heading>
-      <Link to="/login">Login</Link>
+      <Heading mb={4}>Reactivities</Heading>
+      {isLoggedIn ? (
+        <>
+          <Heading mb={4}>Welcome back</Heading>
+          <Link to="/activities">Go to activities!</Link>
+        </>
+      ) : (
+        <Link to="/login">Login</Link>
+      )}
     </Flex>
   );
 };
 
-export default HomePage;
+export default observer(HomePage);

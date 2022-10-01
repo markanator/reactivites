@@ -52,7 +52,7 @@ instance.interceptors.response.use(
         window?.navigate("/not-found");
         break;
       case 500:
-        store.commentStore.setServerError(data);
+        store.commonStore.setServerError(data);
         window?.navigate("/server-error");
         break;
     }

@@ -3,6 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
+  useColorModeValue,
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { useField } from "formik";
@@ -25,7 +26,7 @@ const InputDate = ({ name, ...rest }: Props) => {
       <DatePicker
         customInput={
           <Input
-            bg={"gray.100"}
+            bgColor={useColorModeValue("gray.100", "gray.300")}
             border={0}
             color={"gray.700"}
             _placeholder={{
