@@ -12,6 +12,8 @@ namespace Application.Activities.Dtos
         public string City { get; set; }
         public string Venue { get; set; }
         public string HostUsername { get; set; }
+        public bool IsCancelled { get; set; }
+
         public List<Profile> Attendees { get; set; }
     }
 }
