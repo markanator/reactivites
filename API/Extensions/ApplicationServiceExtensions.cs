@@ -16,7 +16,7 @@ namespace API.Extensions
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Activities API", Version = "v1" });
             });
             services.AddDbContext<DataContext>(opt =>
             {
@@ -26,15 +26,17 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://127.0.0.1:5173");
+                    policy
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .WithOrigins(config["FE_CONNECTION_URL"]);
                 });
             });
             // to allow for CQRS + mediator pattern 
             services.AddMediatR(typeof(List.Handler).Assembly);
-
-            // Cleaner code when mapping to DB
+            // allows for use of autoMapper throughout the project
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            // add ability to get user from anywhere
+            // add ability to get user from httpContext from any authenticated reqs
             services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
