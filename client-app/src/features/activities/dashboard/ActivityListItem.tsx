@@ -14,13 +14,14 @@ import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import CalendarDate from "~/components/CalendarDate";
 import { Activity } from "~/types";
+import ListItemAttendee from "./ListItemAttendee";
 
 type Props = {
   activity: Activity;
 };
 
 const ActivityListItem = ({ activity }: Props) => {
-  const { category, city, date, id, title, venue } = activity;
+  const { category, city, date, id, title, venue, attendees } = activity;
 
   return (
     <Box
@@ -60,6 +61,7 @@ const ActivityListItem = ({ activity }: Props) => {
         w="full"
         objectFit="cover"
       />
+
       <Flex
         p={4}
         overflow="hidden"
@@ -84,6 +86,23 @@ const ActivityListItem = ({ activity }: Props) => {
           View
         </Button>
       </Flex>
+      {attendees && (
+        <Flex
+          px={4}
+          pb={4}
+          flexDir="column"
+          overflow="hidden"
+          justifyContent="space-between"
+          alignItems="start"
+          bgColor={useColorModeValue("white", "gray.700")}
+          roundedBottom="lg"
+        >
+          <Heading as="p" fontSize="md" mb={2}>
+            Attendees
+          </Heading>
+          <ListItemAttendee attendees={attendees} />
+        </Flex>
+      )}
     </Box>
   );
 };

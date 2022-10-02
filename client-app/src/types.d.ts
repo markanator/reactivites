@@ -15,12 +15,22 @@ export interface Activity {
   category: string;
   city: string;
   venue: string;
+  hostUsername?: string;
+  isCancelled?: boolean;
+  attendees?: Profile[];
 }
 
 export interface ServerError {
   statusCode: number;
   message: string;
   details: string;
+}
+
+export interface Profile {
+  username: string;
+  displayName: string;
+  image?: string;
+  bio?: string;
 }
 
 export interface User {
