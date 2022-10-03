@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Flex,
   Heading,
   ListItem,
@@ -8,10 +9,15 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
+import { Link } from "react-router-dom";
+import { Activity, Profile } from "~/types";
 
-type Props = {};
+type Props = {
+  activity: Activity;
+};
 
-const ActivityDetailedSideBar = (props: Props) => {
+const ActivityDetailedSideBar = ({ activity }: Props) => {
+  const { attendees, host, hostUsername } = activity;
   return (
     <Flex
       flexDir="column"
@@ -19,95 +25,91 @@ const ActivityDetailedSideBar = (props: Props) => {
       bg={useColorModeValue("white", "gray.700")}
       boxShadow={"sm"}
     >
-      <Heading
-        as="h4"
-        fontSize="2xl"
-        mb={8}
-        display="block"
-        pos="relative"
-        _after={{
-          position: "absolute",
-          bottom: "-15px",
-          left: "0px",
-          content: '""',
-          width: "30px",
-          height: "1px",
-          backgroundColor: "#e86c60",
-        }}
-      >
-        Attendees
-      </Heading>
-      <UnorderedList listStyleType="none">
-        <ListItem
-          display="flex"
-          borderBottom="1px solid"
-          borderColor="gray.300"
-          _last={{
-            border: "none",
+      <Flex mb={8} alignItems="center">
+        <Heading
+          as="h4"
+          fontSize="2xl"
+          display="block"
+          pos="relative"
+          _after={{
+            position: "absolute",
+            bottom: "-15px",
+            left: "0px",
+            content: '""',
+            width: "30px",
+            height: "1px",
+            backgroundColor: "#e86c60",
           }}
-          _first={{
-            paddingTop: "0px",
-          }}
-          py={2}
         >
-          <Avatar />
-          <Flex flexDir="column" ml={4}>
-            <Text m={0} p={0} fontSize="lg" fontWeight={700}>
-              Matt
-            </Text>
-            <Text
-              mt={-1}
-              fontSize="sm"
-              fontWeight={500}
-              letterSpacing="wide"
-              textColor="orange"
-            >
-              Following
-            </Text>
-          </Flex>
-        </ListItem>
+          Attendees
+        </Heading>
+        <Text pl={3} fontSize="sm" fontWeight="600">
+          ({attendees?.length || 0}){" "}
+          {attendees?.length === 1 ? "Person" : "People"} going
+        </Text>
+      </Flex>
+      <UnorderedList listStyleType="none">
+        {attendees?.map((attendee) => (
+          <AttendeeListItem
+            key={attendee.username}
+            attendee={attendee}
+            hostUsername={hostUsername}
+          />
+        ))}
       </UnorderedList>
-      {/* <Segment attached>
-            <List relaxed divided>
-                <Item style={{ position: 'relative' }}>
-                    <Label
-                        style={{ position: 'absolute' }}
-                        color='orange'
-                        ribbon='right'
-                    >
-                        Host
-                    </Label>
-                    <Image size='tiny' src={'/assets/user.png'} />
-                    <Item.Content verticalAlign='middle'>
-                        <Item.Header as='h3'>
-                            <Link to={`#`}>Bob</Link>
-                        </Item.Header>
-                        <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>
-                    </Item.Content>
-                </Item>
-
-                <Item style={{ position: 'relative' }}>
-                    <Image size='tiny' src={'/assets/user.png'} />
-                    <Item.Content verticalAlign='middle'>
-                        <Item.Header as='h3'>
-                            <Link to={`#`}>Tom</Link>
-                        </Item.Header>
-                        <Item.Extra style={{ color: 'orange' }}>Following</Item.Extra>
-                    </Item.Content>
-                </Item>
-
-                <Item style={{ position: 'relative' }}>
-                    <Image size='tiny' src={'/assets/user.png'} />
-                    <Item.Content verticalAlign='middle'>
-                        <Item.Header as='h3'>
-                            <Link to={`#`}>Sally</Link>
-                        </Item.Header>
-                    </Item.Content>
-                </Item>
-            </List>
-        </Segment> */}
     </Flex>
   );
 };
+
+const AttendeeListItem = React.memo(
+  ({
+    attendee,
+    hostUsername,
+  }: {
+    attendee: Profile;
+    hostUsername?: string;
+  }) => (
+    <ListItem
+      key={attendee.username}
+      display="flex"
+      justifyContent="center"
+      alignItems="start"
+      borderBottom="1px solid"
+      borderColor="gray.300"
+      _last={{
+        border: "none",
+      }}
+      _first={{
+        paddingTop: "0px",
+      }}
+      py={2}
+    >
+      <Avatar />
+      <Flex flexDir="column" ml={4} w="full">
+        <Flex alignItems="center" justifyContent="space-between">
+          <Link to={`/profiles/${attendee.username}`}>
+            <Text m={0} p={0} fontSize="lg" fontWeight={700}>
+              {attendee?.displayName}
+            </Text>
+          </Link>
+          {hostUsername && hostUsername === attendee.username && (
+            <Badge variant="subtle" colorScheme="green">
+              Host
+            </Badge>
+          )}
+        </Flex>
+        <Text
+          mt={-1}
+          fontSize="sm"
+          fontWeight={500}
+          letterSpacing="wide"
+          textColor="orange"
+        >
+          Following
+        </Text>
+      </Flex>
+    </ListItem>
+  )
+);
 
 export default ActivityDetailedSideBar;

@@ -65,21 +65,27 @@ const ActivityDetailedHeader = ({ activity }: Props) => {
             </Flex>
           </Flex>
           <VStack>
-            <Button colorScheme="teal" size="lg">
-              Register to Attend
-            </Button>
-            <Button w="full" colorScheme="yellow" size="lg">
-              Cancel Attendance
-            </Button>
-            <Button
-              w="full"
-              colorScheme="orange"
-              size="md"
-              as={Link}
-              to={`/activities/${activity.id}/manage`}
-            >
-              Manage Event
-            </Button>
+            {!activity?.isHost && activity?.isGoing && (
+              <Button w="full" colorScheme="yellow" size="lg">
+                Cancel Attendance
+              </Button>
+            )}
+            {!activity?.isHost && !activity?.isGoing && (
+              <Button colorScheme="teal" size="lg">
+                Register to Attend
+              </Button>
+            )}
+            {activity?.isHost && (
+              <Button
+                w="full"
+                colorScheme="orange"
+                size="md"
+                as={Link}
+                to={`/activities/${activity.id}/manage`}
+              >
+                Manage Event
+              </Button>
+            )}
           </VStack>
         </Flex>
       </Container>

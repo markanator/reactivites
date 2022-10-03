@@ -18,6 +18,10 @@ export interface Activity {
   hostUsername?: string;
   isCancelled?: boolean;
   attendees?: Profile[];
+  // client side additions
+  isGoing?: boolean;
+  isHost?: boolean;
+  host?: Profile;
 }
 
 export interface ServerError {

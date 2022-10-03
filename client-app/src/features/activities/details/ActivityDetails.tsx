@@ -32,7 +32,7 @@ const ActivityDetails = () => {
             <ActivityDetailedChat />
           </GridItem>
           <GridItem>
-            <ActivityDetailedSideBar />
+            <ActivityDetailedSideBar activity={selectedActivity} />
           </GridItem>
         </Grid>
       </Container>

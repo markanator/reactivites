@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "src/async/fetcher/agent";
 import type { Activity } from "~/types";
 import dayjs from "dayjs";
+import { store } from "./store";
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
   selectedActivity: Activity | undefined = undefined;
@@ -68,7 +69,16 @@ export default class ActivityStore {
   };
 
   private addActivityToRegistry = (activity: Activity) => {
-    // activity.date = activity.date.split("T")[0];
+    const user = store.userStore.user;
+    if (user) {
+      activity.isGoing = activity.attendees!.some(
+        (a) => a.username === user.username
+      );
+      activity.isHost = activity.hostUsername === user.username;
+      activity.host = activity.attendees?.find(
+        (x) => x.username === activity.hostUsername
+      );
+    }
     activity.date = new Date(activity.date);
     this.activityRegistry.set(activity.id, activity);
   };

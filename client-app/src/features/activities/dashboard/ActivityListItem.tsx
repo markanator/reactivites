@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Flex,
@@ -38,19 +39,25 @@ const ActivityListItem = ({ activity }: Props) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <HStack>
-          <Avatar name="Angelina" />
-          <Flex flexDir="column">
+        <HStack pos="relative">
+          <Avatar name={activity?.hostUsername} />
+          <Flex flexDir="column" alignItems="start">
             <Text mb={0}>
-              <strong>Angelina</strong> shared a{" "}
+              <strong>{activity.host?.displayName}</strong> shared a{" "}
               <Box as="span" textTransform="capitalize">
                 {category}
               </Box>{" "}
               Event
             </Text>
-            <Text mb={0} fontSize="sm">
-              Created Date
-            </Text>
+            <HStack pt={1}>
+              {activity?.isHost && <Badge colorScheme="purple">Hosting</Badge>}
+              {activity?.isGoing && !activity?.isHost && (
+                <Badge colorScheme="green">Attending</Badge>
+              )}
+              {!activity?.isGoing && !activity?.isHost && (
+                <Badge colorScheme="yellow">Not Attending</Badge>
+              )}
+            </HStack>
           </Flex>
         </HStack>
         <Box>...</Box>
