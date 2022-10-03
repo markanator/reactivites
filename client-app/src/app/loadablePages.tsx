@@ -1,5 +1,5 @@
 import loadable from "@loadable/component";
-import ScreenLoading from "./components/ScreenLoading";
+import ScreenLoading from "~/components/ScreenLoading";
 // PUBLIC
 export const HomePage = loadable(() => import("~/features/home/HomePage"), {
   fallback: <ScreenLoading />,
@@ -10,7 +10,7 @@ export const App = loadable(() => import("~/app/App"), {
 
 // ACTIVITES
 export const ActivitiesLayout = loadable(
-  () => import("./Layouts/ActivitiesLayout"),
+  () => import("~/Layouts/ActivitiesLayout"),
   {
     fallback: <ScreenLoading />,
   }

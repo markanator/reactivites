@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useStoreContext } from "~/stores/store";
-import ScreenLoading from "./components/ScreenLoading";
-import { useAttachScripts } from "./hooks/useAttachScripts";
+import ScreenLoading from "~/components/ScreenLoading";
+import { useAttachScripts } from "../hooks/useAttachScripts";
 
 type Props = {};
 
