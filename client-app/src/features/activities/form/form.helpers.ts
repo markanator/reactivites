@@ -15,16 +15,6 @@ export const ActivityFormSchema = yup
 
 export type IFormData = Omit<Activity, "id">;
 
-export const initialState: Activity = {
-  id: "",
-  title: "",
-  description: "",
-  category: "",
-  date: new Date(),
-  city: "",
-  venue: "",
-};
-
 export const categoryOptions = [
   { label: "Culture", value: "culture" },
   { label: "Drinks", value: "drinks" },

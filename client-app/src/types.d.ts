@@ -10,17 +10,17 @@ declare global {
 export interface Activity {
   id: string;
   title: string;
-  date: Date;
+  date: Date | null;
   description: string;
   category: string;
   city: string;
   venue: string;
-  hostUsername?: string;
-  isCancelled?: boolean;
-  attendees?: Profile[];
+  hostUsername: string;
+  isCancelled: boolean;
+  attendees: Profile[];
   // client side additions
-  isGoing?: boolean;
-  isHost?: boolean;
+  isGoing: boolean;
+  isHost: boolean;
   host?: Profile;
 }
 

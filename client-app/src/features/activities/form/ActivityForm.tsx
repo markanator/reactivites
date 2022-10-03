@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik, FormikProps } from "formik";
 import { observer } from "mobx-react-lite";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import ScreenLoading from "~/components/ScreenLoading";
@@ -17,45 +17,43 @@ import InputDate from "~/components/forms/InputDate";
 import InputSelect from "~/components/forms/InputSelect";
 import InputTextArea from "~/components/forms/InputTextArea";
 import { useStoreContext } from "~/stores/store";
-import { Activity } from "~/types";
-import {
-  ActivityFormSchema,
-  categoryOptions,
-  initialState,
-} from "./form.helpers";
+import { ActivityFormSchema, categoryOptions } from "./form.helpers";
+import { ActivityFormValues } from "~/lib/ActivityFormValues";
 
 const ActivityForm = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [activity, setActivity] = useState<ActivityFormValues>(
+    new ActivityFormValues()
+  );
   let { id } = useParams();
   const { activityStore } = useStoreContext();
   const {
-    selectedActivity,
     createActivity,
     updateActivity,
-    clearSelectedActivity,
     loadActivityFromId,
     isLoadingInitial,
   } = activityStore;
   const isEditing = useMemo(() => pathname?.includes("manage"), [pathname]);
 
-  const onSubmit = async (values: Activity) => {
-    // console.log({ isEditing, ...values, id: id ?? "" });
-    if (isEditing && selectedActivity?.id) {
-      updateActivity({ ...values, id: selectedActivity?.id });
-      navigate(`/activities/${selectedActivity?.id}`);
+  const onSubmit = async (values: ActivityFormValues) => {
+    let idToNavigateTo: string;
+    if (isEditing && activity?.id) {
+      idToNavigateTo = activity.id;
+      updateActivity(values);
     } else {
-      const newAct = { ...values, id: uuid() };
+      idToNavigateTo = uuid();
+      const newAct = { ...values, id: idToNavigateTo };
       await createActivity(newAct);
-      navigate(`/activities/${newAct.id}`);
     }
+    navigate(`/activities/${idToNavigateTo}`);
   };
 
   useEffect(() => {
     if (!!id) {
-      loadActivityFromId(id);
-    } else {
-      clearSelectedActivity();
+      loadActivityFromId(id).then((payload) =>
+        setActivity(new ActivityFormValues(payload))
+      );
     }
   }, [id, loadActivityFromId]);
 
@@ -76,11 +74,15 @@ const ActivityForm = () => {
     >
       <Formik
         enableReinitialize
-        initialValues={selectedActivity ?? initialState}
+        initialValues={activity}
         validationSchema={ActivityFormSchema}
         onSubmit={onSubmit}
       >
-        {({ isSubmitting, dirty, isValid }: FormikProps<Activity>) => (
+        {({
+          isSubmitting,
+          dirty,
+          isValid,
+        }: FormikProps<ActivityFormValues>) => (
           <Form>
             <Flex p={8} flex={1} align={"center"} justify={"center"}>
               <Stack spacing={4} w={"full"} maxW={"md"}>
@@ -100,20 +102,18 @@ const ActivityForm = () => {
                 <InputField name="venue" />
                 <Stack direction={"row"} justifyContent="center" spacing={6}>
                   <Button
-                    isLoading={isLoadingInitial}
-                    colorScheme={"gray"}
-                    variant={"solid"}
                     as={Link}
                     to={
-                      isEditing
-                        ? `/activities/${selectedActivity?.id}`
-                        : "/activities"
+                      isEditing ? `/activities/${activity?.id}` : "/activities"
                     }
+                    isLoading={isLoadingInitial || isSubmitting}
+                    colorScheme={"gray"}
+                    variant={"solid"}
                   >
                     Cancel
                   </Button>
                   <Button
-                    isLoading={isLoadingInitial}
+                    isLoading={isLoadingInitial || isSubmitting}
                     disabled={isSubmitting || !dirty || !isValid}
                     type="submit"
                     colorScheme={"blue"}
