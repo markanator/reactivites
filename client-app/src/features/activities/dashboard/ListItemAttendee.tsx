@@ -1,6 +1,16 @@
-import { Avatar, HStack } from "@chakra-ui/react";
+import {
+  Avatar,
+  HStack,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
+import ProfileCard from "~/features/profiles/ProfileCard";
 import { Profile } from "~/types";
 
 type Props = {
@@ -11,16 +21,44 @@ const ListItemAttendee = ({ attendees }: Props) => {
   return (
     <HStack>
       {attendees &&
-        attendees.map((a) => (
-          <Link key={a.username} to={`/profiles/${a.username}`}>
-            <Avatar
-              size="sm"
-              // src={a?.image ?? "/assets/user.png"}
-              name={a.displayName}
-            />
-          </Link>
+        attendees.map((profile) => (
+          <AttendeePopover key={profile.username} profile={profile} />
         ))}
     </HStack>
+  );
+};
+
+const AttendeePopover = ({ profile }: { profile: Profile }) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  return (
+    <Popover
+      key={profile.username}
+      isLazy
+      returnFocusOnClose={false}
+      isOpen={isOpen}
+      onClose={onClose}
+      placement="top-start"
+      closeOnBlur={false}
+    >
+      <PopoverTrigger>
+        <Link
+          to={`/profiles/${profile.username}`}
+          onMouseEnter={onOpen}
+          onMouseLeave={onClose}
+        >
+          <Avatar
+            size="sm"
+            src={profile?.image ?? "/assets/user.png"}
+            name={profile.displayName}
+          />
+        </Link>
+      </PopoverTrigger>
+      <PopoverContent id="content">
+        <>
+          <ProfileCard profile={profile} />
+        </>
+      </PopoverContent>
+    </Popover>
   );
 };
 
