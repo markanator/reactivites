@@ -24,7 +24,7 @@ const ActivityFilters = (props: Props) => {
         bg={useColorModeValue("white", "gray.700")}
         boxShadow={"sm"}
         mb={8}
-        mt={16}
+        mt={[0, 0, 16]}
       >
         <Heading
           as="h4"

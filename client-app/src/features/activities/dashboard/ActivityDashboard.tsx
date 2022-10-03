@@ -24,8 +24,11 @@ const ActivityDashboard = () => {
     <Container maxW={"8xl"} pt={4}>
       <SimpleGrid
         display={{
-          base: "initial",
+          base: "flex",
           md: "grid",
+        }}
+        flexDir={{
+          base: "column",
         }}
         columns={{
           md: 3,
@@ -36,6 +39,7 @@ const ActivityDashboard = () => {
         pt={12}
       >
         <GridItem
+          order={2}
           colSpan={{
             md: 2,
           }}
@@ -44,6 +48,7 @@ const ActivityDashboard = () => {
           <ActivityList />
         </GridItem>
         <GridItem
+          order={[1, 1, 2]}
           colSpan={{
             md: 1,
           }}
