@@ -1,7 +1,7 @@
 import { Container, GridItem, SimpleGrid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
-import ScreenLoading from "~/app/components/ScreenLoading";
+import ScreenLoading from "~/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
 import ActivityFilters from "./ActivityFilters";
 import ActivityList from "./ActivityList";

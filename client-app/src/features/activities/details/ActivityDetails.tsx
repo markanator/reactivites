@@ -2,7 +2,7 @@ import { Container, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ScreenLoading from "~/app/components/ScreenLoading";
+import ScreenLoading from "~/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
 import ActivityDetailedChat from "./ActivityDetailedChat";
 import ActivityDetailedHeader from "./ActivityDetailedHeader";

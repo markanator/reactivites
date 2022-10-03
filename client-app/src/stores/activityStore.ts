@@ -3,6 +3,7 @@ import agent from "src/async/fetcher/agent";
 import type { Activity } from "~/types";
 import dayjs from "dayjs";
 import { store } from "./store";
+import Profile from "~/lib/Profile";
 export default class ActivityStore {
   activityRegistry = new Map<string, Activity>();
   selectedActivity: Activity | undefined = undefined;
@@ -131,7 +132,6 @@ export default class ActivityStore {
       });
     }
   };
-
   deleteActivity = async (id: string) => {
     this.isLoading = true;
     try {
@@ -145,6 +145,37 @@ export default class ActivityStore {
       runInAction(() => {
         this.isLoading = false;
       });
+    }
+  };
+
+  updateAttendance = async () => {
+    const user = store.userStore.user;
+    this.isLoading = true;
+    try {
+      await agent.Activities.attend(this.selectedActivity!.id);
+      runInAction(() => {
+        // already going, filter them out
+        if (this.selectedActivity?.isGoing) {
+          this.selectedActivity.attendees =
+            this.selectedActivity.attendees?.filter(
+              (a) => a.username !== user?.username
+            );
+          this.selectedActivity.isGoing = false;
+        } else {
+          // not going, add them in
+          const attendee = new Profile(user!);
+          this.selectedActivity?.attendees?.push(attendee);
+          this.selectedActivity!.isGoing = true;
+        }
+        this.activityRegistry.set(
+          this.selectedActivity!.id,
+          this.selectedActivity!
+        );
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      runInAction(() => (this.isLoading = false));
     }
   };
 }
