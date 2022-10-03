@@ -8,9 +8,11 @@ import {
   UnorderedList,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Activity, Profile } from "~/types";
+import { AttendeeListItem } from "./Sidebar.helper";
 
 type Props = {
   activity: Activity;
@@ -61,55 +63,4 @@ const ActivityDetailedSideBar = ({ activity }: Props) => {
   );
 };
 
-const AttendeeListItem = React.memo(
-  ({
-    attendee,
-    hostUsername,
-  }: {
-    attendee: Profile;
-    hostUsername?: string;
-  }) => (
-    <ListItem
-      key={attendee.username}
-      display="flex"
-      justifyContent="center"
-      alignItems="start"
-      borderBottom="1px solid"
-      borderColor="gray.300"
-      _last={{
-        border: "none",
-      }}
-      _first={{
-        paddingTop: "0px",
-      }}
-      py={2}
-    >
-      <Avatar />
-      <Flex flexDir="column" ml={4} w="full">
-        <Flex alignItems="center" justifyContent="space-between">
-          <Link to={`/profiles/${attendee.username}`}>
-            <Text m={0} p={0} fontSize="lg" fontWeight={700}>
-              {attendee?.displayName}
-            </Text>
-          </Link>
-          {hostUsername && hostUsername === attendee.username && (
-            <Badge variant="subtle" colorScheme="green">
-              Host
-            </Badge>
-          )}
-        </Flex>
-        <Text
-          mt={-1}
-          fontSize="sm"
-          fontWeight={500}
-          letterSpacing="wide"
-          textColor="orange"
-        >
-          Following
-        </Text>
-      </Flex>
-    </ListItem>
-  )
-);
-
-export default ActivityDetailedSideBar;
+export default observer(ActivityDetailedSideBar);

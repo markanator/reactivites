@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { MapPinIcon, ClockIcon, TagIcon } from "@heroicons/react/24/solid";
@@ -13,6 +14,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
 import CalendarDate from "~/components/CalendarDate";
+import { useStoreContext } from "~/stores/store";
 import { Activity } from "~/types";
 
 type Props = {
@@ -20,8 +22,14 @@ type Props = {
 };
 
 const ActivityDetailedHeader = ({ activity }: Props) => {
+  const { activityStore } = useStoreContext();
+  const { updateAttendance, isLoading } = activityStore;
   return (
-    <Flex flexDir="column" w="full" bgColor="gray.100">
+    <Flex
+      flexDir="column"
+      w="full"
+      bgColor={useColorModeValue("gray.100", "gray.700")}
+    >
       <Box
         backgroundImage={`url("/assets/categoryImages/${activity.category}.jpg")`}
         backgroundSize="cover"
@@ -64,24 +72,29 @@ const ActivityDetailedHeader = ({ activity }: Props) => {
               </Flex>
             </Flex>
           </Flex>
-          <VStack>
+          <VStack as="fieldset" disabled={isLoading}>
             {!activity?.isHost && activity?.isGoing && (
-              <Button w="full" colorScheme="yellow" size="lg">
+              <Button
+                w="full"
+                colorScheme="yellow"
+                size="lg"
+                onClick={updateAttendance}
+              >
                 Cancel Attendance
               </Button>
             )}
             {!activity?.isHost && !activity?.isGoing && (
-              <Button colorScheme="teal" size="lg">
+              <Button colorScheme="teal" size="lg" onClick={updateAttendance}>
                 Register to Attend
               </Button>
             )}
             {activity?.isHost && (
               <Button
+                as={Link}
+                to={`/activities/${activity.id}/manage`}
                 w="full"
                 colorScheme="orange"
                 size="md"
-                as={Link}
-                to={`/activities/${activity.id}/manage`}
               >
                 Manage Event
               </Button>
