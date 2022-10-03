@@ -1,6 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,10 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             // add ability to get user from httpContext from any authenticated reqs
             services.AddScoped<IUserAccessor, UserAccessor>();
+            // Dep Inj
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            // add cloud photo config
+            services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
 
             return services;
         }
