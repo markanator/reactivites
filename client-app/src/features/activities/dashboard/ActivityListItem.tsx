@@ -43,18 +43,22 @@ const ActivityListItem = ({ activity }: Props) => {
           <Avatar name={activity?.hostUsername} />
           <Flex flexDir="column" alignItems="start">
             <Text mb={0}>
-              <strong>{activity.host?.displayName}</strong> shared a{" "}
+              <strong>{activity.host?.displayName}</strong>{" "}
+              {activity.isCancelled ? "cancelled" : "shared"} a{" "}
               <Box as="span" textTransform="capitalize">
                 {category}
               </Box>{" "}
               Event
             </Text>
             <HStack pt={1}>
-              {activity?.isHost && <Badge colorScheme="purple">Hosting</Badge>}
-              {activity?.isGoing && !activity?.isHost && (
+              {activity.isCancelled && (
+                <Badge colorScheme="red">Activity Cancelled</Badge>
+              )}
+              {activity.isHost && <Badge colorScheme="purple">Hosting</Badge>}
+              {activity.isGoing && !activity.isHost && (
                 <Badge colorScheme="green">Attending</Badge>
               )}
-              {!activity?.isGoing && !activity?.isHost && (
+              {!activity.isGoing && !activity.isHost && (
                 <Badge colorScheme="yellow">Not Attending</Badge>
               )}
             </HStack>
@@ -62,6 +66,7 @@ const ActivityListItem = ({ activity }: Props) => {
         </HStack>
         <Box>...</Box>
       </Flex>
+      {/* IMAGE */}
       <Image
         src={`/assets/categoryImages/${category}.jpg`}
         h={325}
@@ -76,9 +81,19 @@ const ActivityListItem = ({ activity }: Props) => {
         alignItems="center"
       >
         <Flex w="full">
-          <CalendarDate date={date} />
+          <CalendarDate date={date!} />
           <Flex flexDir="column" w="full">
-            <Heading as="h5" fontSize="1rem" mb={1} textTransform="capitalize">
+            <Heading
+              as={Link}
+              to={`${id}`}
+              _hover={{
+                textDecoration: "underline",
+              }}
+              w="fit-content"
+              fontSize="1rem"
+              mb={1}
+              textTransform="capitalize"
+            >
               {title}
             </Heading>
             <Flex flexDir="row" alignItems="center">

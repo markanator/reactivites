@@ -179,4 +179,24 @@ export default class ActivityStore {
       runInAction(() => (this.isLoading = false));
     }
   };
+
+  cancelActivityToggle = async () => {
+    this.isLoading = true;
+    try {
+      // backend takes care of host cancelling logic
+      await agent.Activities.attend(this.selectedActivity!.id);
+      runInAction(() => {
+        this.selectedActivity!.isCancelled =
+          !this.selectedActivity?.isCancelled;
+        this.activityRegistry.set(
+          this.selectedActivity!.id,
+          this.selectedActivity!
+        );
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      runInAction(() => (this.isLoading = false));
+    }
+  };
 }
