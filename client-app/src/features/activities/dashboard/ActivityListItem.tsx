@@ -40,10 +40,15 @@ const ActivityListItem = ({ activity }: Props) => {
         alignItems="center"
       >
         <HStack pos="relative">
-          <Avatar name={activity?.hostUsername} />
+          <Avatar
+            name={activity?.hostUsername}
+            src={activity.host?.image ?? "/assets/user.png"}
+          />
           <Flex flexDir="column" alignItems="start">
             <Text mb={0}>
-              <strong>{activity.host?.displayName}</strong>{" "}
+              <Link to={`/profiles/${activity.hostUsername}`}>
+                <strong>{activity.host?.displayName}</strong>
+              </Link>{" "}
               {activity.isCancelled ? "cancelled" : "shared"} a{" "}
               <Box as="span" textTransform="capitalize">
                 {category}

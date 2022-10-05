@@ -27,7 +27,10 @@ export const AttendeeListItem = observer(
       }}
       py={2}
     >
-      <Avatar />
+      <Avatar
+        src={attendee?.image || "/assets/user.png"}
+        name={attendee.displayName}
+      />
       <Flex flexDir="column" ml={4} w="full">
         <Flex alignItems="center" justifyContent="space-between">
           <Link to={`/profiles/${attendee.username}`}>

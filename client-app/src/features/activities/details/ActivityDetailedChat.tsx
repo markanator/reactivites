@@ -54,7 +54,7 @@ const ActivityDetailedChat = (props: Props) => {
         <Flex flexDir="column" w="full">
           {/* SINGLE COMMENT */}
           <Flex w="full" pos="relative" pt={1} mt={1}>
-            <Avatar src="/assets/user.png" />
+            <Avatar src="/assets/user.png" name="Matt" />
             <Flex flexDir="column" ml={4}>
               <Flex alignItems="center">
                 <Text fontWeight={700}>Matt</Text>
