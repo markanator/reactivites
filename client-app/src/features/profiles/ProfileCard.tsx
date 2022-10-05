@@ -21,6 +21,12 @@ type Props = {
   profile: Profile;
 };
 
+const truncate = (str?: string) => {
+  if (str) {
+    return str.length > 40 ? str.substring(0, 37) + "..." : str;
+  }
+};
+
 const ProfileCard = ({ profile }: Props) => {
   return (
     <Center>
@@ -61,7 +67,7 @@ const ProfileCard = ({ profile }: Props) => {
           </Flex>
         </Flex>
         <Text color={useColorModeValue("gray.700", "gray.400")}>
-          {profile?.bio || "No bio."}
+          {truncate(profile?.bio) || "No bio."}
         </Text>
       </Flex>
     </Center>

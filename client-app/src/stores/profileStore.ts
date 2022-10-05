@@ -95,4 +95,27 @@ export default class ProfileStore {
       runInAction(() => (this.isLoading = false));
     }
   };
+
+  updateProfile = async (freshProfile: Partial<Profile>) => {
+    this.isLoading = true;
+    try {
+      await agent.Profiles.updateProfile({
+        displayName: freshProfile.displayName!,
+        bio: freshProfile.bio!,
+      });
+      runInAction(() => {
+        if (
+          freshProfile?.displayName &&
+          freshProfile.displayName !== store.userStore.user?.displayName
+        ) {
+          store.userStore.setDisplayName(freshProfile.displayName);
+        }
+        this.profile = { ...this.profile, ...(freshProfile as Profile) };
+        this.isLoading = false;
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction(() => (this.isLoading = false));
+    }
+  };
 }

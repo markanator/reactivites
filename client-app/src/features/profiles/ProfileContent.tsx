@@ -10,6 +10,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Profile } from "~/types";
+import ProfileAbout from "./ProfileAbout";
 import ProfilePhotos from "./ProfilePhotos";
 
 type Props = {
@@ -34,10 +35,7 @@ const ProfileContent = ({ profile }: Props) => {
           w="full"
         >
           <TabPanel>
-            <p>1!</p>
-            <p>1!</p>
-            <p>1!</p>
-            <p>1!</p>
+            <ProfileAbout />
           </TabPanel>
           <TabPanel w="full">
             <ProfilePhotos profile={profile} />
