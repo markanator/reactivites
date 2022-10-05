@@ -33,6 +33,13 @@ export const ActivityForm = loadable(
     fallback: <ScreenLoading />,
   }
 );
+// PROFILES
+export const ProfilePage = loadable(
+  () => import("~/features/profiles/ProfilePage"),
+  {
+    fallback: <ScreenLoading />,
+  }
+);
 
 // AUTH FORMS
 export const LoginPage = loadable(() => import("~/features/users/LoginForm"), {

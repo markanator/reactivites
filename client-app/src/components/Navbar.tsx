@@ -126,7 +126,7 @@ const Navbar = () => {
                   />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem as={Link} to={`/profile/${user?.username}`}>
+                  <MenuItem as={Link} to={`/profiles/${user?.username}`}>
                     Profile
                   </MenuItem>
                   <MenuItem onClick={logout}>Logout</MenuItem>
