@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserFormValues } from "~/features/users/utils";
 import { ActivityFormValues } from "~/lib/ActivityFormValues";
 import { Activity, Photo, Profile, User } from "~/types";
@@ -8,8 +8,8 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  post: <T>(url: string, body: {}) =>
-    axios.post<T>(url, body).then(responseBody),
+  post: <T>(url: string, body: {}, config: AxiosRequestConfig<any> = {}) =>
+    axios.post<T>(url, body, config).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
@@ -38,12 +38,13 @@ const Profiles = {
   uploadPhoto: (file: Blob) => {
     let formData = new FormData();
     formData.append("File", file);
-    return axios.post<Photo>("photos", formData, {
+    return requests.post<Photo>("photos", formData, {
       headers: { "Content-type": "multipart/form-data" },
     });
   },
-  setMainPhoto: (id: string) => requests.post(`/photos/${id}/setMain`, {}),
-  deletePhoto: (id: string) => requests.del(`/photos/${id}`),
+  setMainPhoto: (id: string) =>
+    requests.post<void>(`/photos/${id}/setMain`, {}),
+  deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
 };
 
 const agent = {
