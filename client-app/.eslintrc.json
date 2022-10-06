@@ -1,0 +1,20 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
+	],
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["jest", "@typescript-eslint"],
+	"root": true,
+	"settings": {
+		"jest": {
+			"version": 28
+		},
+		"react": {
+			"version": "detect"
+		}
+	}
+}
