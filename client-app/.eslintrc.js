@@ -4,7 +4,7 @@ module.exports = {
     "react-app",
     "react-app/jest",
     "plugin:react-hooks/recommended",
-    "prettier",
+    "plugin:prettier/recommended",
   ],
   plugins: [],
   // for vitest
