@@ -29,7 +29,7 @@ const ActivityDetails = () => {
         <Grid templateColumns="repeat(3, 1fr)" gap={6}>
           <GridItem colSpan={2}>
             <ActivityDetailedInfo activity={selectedActivity} />
-            <ActivityDetailedChat />
+            <ActivityDetailedChat activityId={selectedActivity.id} />
           </GridItem>
           <GridItem>
             <ActivityDetailedSideBar activity={selectedActivity} />

@@ -11,12 +11,28 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
+import { useStoreContext } from "~/stores/store";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-type Props = {};
+dayjs.extend(relativeTime);
 
-const ActivityDetailedChat = (props: Props) => {
+type Props = {
+  activityId: string;
+};
+
+const ActivityDetailedChat = ({ activityId }: Props) => {
+  const { commentStore, userStore } = useStoreContext();
+  const { createHubConnection, clearComments, comments } = commentStore;
+  useEffect(() => {
+    if (activityId) {
+      createHubConnection(activityId);
+    }
+    return clearComments;
+  }, [activityId]);
+
   return (
     <Flex
       flexDir="column"
@@ -44,45 +60,61 @@ const ActivityDetailedChat = (props: Props) => {
       </Heading>
       <Flex flexDir="column" alignItems="flex-start">
         {/* AUTH REQUIRED */}
-        <Text mb={8}>
-          You must be{" "}
-          <Link textColor="blue.500" fontWeight={500}>
-            logged in
-          </Link>{" "}
-          to post a comment.
-        </Text>
-        <Flex flexDir="column" w="full">
-          {/* SINGLE COMMENT */}
-          <Flex w="full" pos="relative" pt={1} mt={1}>
-            <Avatar src="/assets/user.png" name="Matt" />
-            <Flex flexDir="column" ml={4}>
-              <Flex alignItems="center">
-                <Text fontWeight={700}>Matt</Text>
-                <Text ml={2} fontSize="xs" textColor="gray.500">
-                  Today at 5:42PM
-                </Text>
-              </Flex>
-              <Text>How artistic!</Text>
-              <Flex>
-                <Button variant="link" size="xs">
-                  Reply
-                </Button>
-              </Flex>
-            </Flex>
-          </Flex>
+        {!userStore.isLoggedIn && (
+          <Text mb={8}>
+            You must be{" "}
+            <Link textColor="blue.500" fontWeight={500}>
+              logged in
+            </Link>{" "}
+            to post a comment.
+          </Text>
+        )}
 
-          <Box w="full" mt={6}>
-            <HStack as="form" alignItems="start">
-              <Textarea
-                name="comment"
-                placeholder="Leave a comment or reply..."
-              ></Textarea>
-              <Button colorScheme="teal" size="md">
-                Add Reply
-              </Button>
-            </HStack>
-          </Box>
-        </Flex>
+        {userStore.isLoggedIn && (
+          <Flex flexDir="column" w="full">
+            {/* SINGLE COMMENT */}
+            {comments.map((comm) => (
+              <Flex key={comm?.id} w="full" pos="relative" pt={1} mt={1}>
+                <Avatar
+                  src={comm?.image ?? "/assets/user.png"}
+                  name={comm?.displayName}
+                />
+                <Flex flexDir="column" ml={4}>
+                  <Flex alignItems="center">
+                    <Text
+                      as={Link}
+                      to={`/profiles/${comm.username}`}
+                      fontWeight={700}
+                    >
+                      {comm?.displayName}
+                    </Text>
+                    <Text ml={2} fontSize="xs" textColor="gray.500">
+                      {dayjs(comm.createdAt).fromNow()}
+                    </Text>
+                  </Flex>
+                  <Text>{comm.body}</Text>
+                  <Flex>
+                    <Button variant="link" size="xs">
+                      Reply
+                    </Button>
+                  </Flex>
+                </Flex>
+              </Flex>
+            ))}
+
+            <Box w="full" mt={6}>
+              <HStack as="form" alignItems="start">
+                <Textarea
+                  name="comment"
+                  placeholder="Leave a comment or reply..."
+                ></Textarea>
+                <Button colorScheme="teal" size="md">
+                  Add Reply
+                </Button>
+              </HStack>
+            </Box>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );
