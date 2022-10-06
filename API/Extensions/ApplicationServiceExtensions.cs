@@ -30,6 +30,7 @@ namespace API.Extensions
                     policy
                         .AllowAnyMethod()
                         .AllowAnyHeader()
+                        .AllowCredentials()
                         .WithOrigins(config["FE_CONNECTION_URL"]);
                 });
             });
