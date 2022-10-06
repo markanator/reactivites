@@ -24,6 +24,7 @@ const registerSchema = yup.object({
 const RegisterForm = () => {
 	const { userStore } = useStoreContext();
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const onSubmit = (values: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
 		userStore.register(values).catch((error) => {
 			setSubmitting(false);
@@ -34,6 +35,7 @@ const RegisterForm = () => {
 	return (
 		<Box bgColor={useColorModeValue("white", "gray.700")} py={6}>
 			<Formik initialValues={initialState} validationSchema={registerSchema} onSubmit={onSubmit}>
+				{/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
 				{({ handleSubmit, isSubmitting, dirty, isValid, errors }: FormikProps<any>) => (
 					<Form onSubmit={handleSubmit}>
 						<VStack spacing={6}>

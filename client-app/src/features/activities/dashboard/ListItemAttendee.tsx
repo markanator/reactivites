@@ -2,13 +2,10 @@ import {
 	Avatar,
 	HStack,
 	Popover,
-	PopoverBody,
 	PopoverContent,
 	PopoverTrigger,
-	Tooltip,
 	useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
 import { Link } from "react-router-dom";
 import ProfileCard from "~/features/profiles/ProfileCard";
 import { Profile } from "~/types";

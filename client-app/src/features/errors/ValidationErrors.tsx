@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert, AlertIcon, Stack } from "@chakra-ui/react";
 import React from "react";
 

@@ -9,10 +9,9 @@ import {
 	useColorModeValue,
 	VStack,
 } from "@chakra-ui/react";
-import { MapPinIcon, ClockIcon, TagIcon } from "@heroicons/react/24/solid";
+import { ClockIcon, MapPinIcon, TagIcon } from "@heroicons/react/24/solid";
 import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Link } from "react-router-dom";
 import CalendarDate from "~/components/CalendarDate";
 import { useStoreContext } from "~/stores/store";
@@ -42,6 +41,7 @@ const ActivityDetailedHeader = ({ activity }: Props) => {
 			<Container maxW={"8xl"} pt={4}>
 				<Flex justifyContent="space-between" alignItems="center" py={6}>
 					<Flex w="full">
+						{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
 						<CalendarDate date={activity.date!} />
 						<Flex flexDir="column" w="full">
 							<Flex justifyContent="start" alignItems="center">

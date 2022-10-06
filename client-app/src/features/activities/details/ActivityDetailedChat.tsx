@@ -82,7 +82,7 @@ const ActivityDetailedChat = ({ activityId }: Props) => {
 							addComment(val).then(() => resetForm());
 						}}
 					>
-						{({ isSubmitting, dirty, isValid, handleSubmit }: FormikProps<any>) => (
+						{({ isSubmitting, dirty, isValid, handleSubmit }: FormikProps<{ body: string }>) => (
 							<Form>
 								<Box w="full" mb={6}>
 									<HStack alignItems="start">

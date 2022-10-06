@@ -1,6 +1,5 @@
-import React, { useRef } from "react";
-import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import Cropper from "react-cropper";
 
 type Props = {
 	imagePreview: string;

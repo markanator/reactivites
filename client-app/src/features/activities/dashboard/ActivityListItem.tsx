@@ -23,6 +23,7 @@ type Props = {
 
 const ActivityListItem = ({ activity }: Props) => {
 	const { category, city, date, id, title, venue, attendees } = activity;
+	const itemBacgroundCardColor = useColorModeValue("white", "gray.700");
 
 	return (
 		<Box key={id} rounded={"lg"} bg={useColorModeValue("white", "gray.700")} boxShadow={"lg"}>
@@ -94,7 +95,7 @@ const ActivityListItem = ({ activity }: Props) => {
 					overflow="hidden"
 					justifyContent="space-between"
 					alignItems="start"
-					bgColor={useColorModeValue("white", "gray.700")}
+					bgColor={itemBacgroundCardColor}
 					roundedBottom="lg"
 				>
 					<Heading as="p" fontSize="md" mb={2}>

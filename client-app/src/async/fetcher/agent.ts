@@ -8,7 +8,7 @@ const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
 	get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-	post: <T>(url: string, body: unknown = {}, config: AxiosRequestConfig<any> = {}) =>
+	post: <T>(url: string, body: unknown = {}, config: AxiosRequestConfig<unknown> = {}) =>
 		axios.post<T>(url, body, config).then(responseBody),
 	put: <T>(url: string, body: unknown = {}) => axios.put<T>(url, body).then(responseBody),
 	del: <T>(url: string) => axios.delete<T>(url).then(responseBody),

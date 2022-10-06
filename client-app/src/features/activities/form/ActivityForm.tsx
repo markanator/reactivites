@@ -41,6 +41,8 @@ const ActivityForm = () => {
 		}
 	}, [id, loadActivityFromId]);
 
+	const boxBgColor = useColorModeValue("white", "gray.900");
+
 	if (isLoadingInitial) return <ScreenLoading />;
 
 	return (
@@ -49,7 +51,7 @@ const ActivityForm = () => {
 			mx="auto"
 			maxW={"600px"}
 			w={"full"}
-			bg={useColorModeValue("white", "gray.900")}
+			bg={boxBgColor}
 			boxShadow={"2xl"}
 			rounded={"md"}
 			p={6}

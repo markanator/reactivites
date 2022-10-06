@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowUpTrayIcon } from "@heroicons/react/24/solid";
 import { Flex, Heading } from "@chakra-ui/react";
 import React, { useCallback } from "react";

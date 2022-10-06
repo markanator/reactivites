@@ -7,12 +7,15 @@ import { useStoreContext } from "~/stores/store";
 interface LoginFormVals {
 	email: string;
 	password: string;
-	error?: string;
+	error?: string | null;
 }
 
 const LoginForm = () => {
 	const { userStore } = useStoreContext();
-	const onSubmit = (v: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
+	const onSubmit = (
+		v: LoginFormVals,
+		{ setErrors, setSubmitting }: FormikHelpers<LoginFormVals>,
+	) => {
 		userStore.login(v).catch(() => {
 			setSubmitting(false);
 			setErrors({ error: "Invalid email or password" });
@@ -20,8 +23,8 @@ const LoginForm = () => {
 	};
 	return (
 		<Box bgColor={useColorModeValue("white", "gray.700")} py={6}>
-			<Formik initialValues={{ email: "", password: "", error: null }} onSubmit={onSubmit}>
-				{({ handleSubmit, isSubmitting }: FormikProps<any>) => (
+			<Formik initialValues={{ email: "", password: "" }} onSubmit={onSubmit}>
+				{({ handleSubmit, isSubmitting }: FormikProps<LoginFormVals>) => (
 					<Form onSubmit={handleSubmit}>
 						<VStack spacing={6}>
 							<Heading>Login to Reactivities</Heading>

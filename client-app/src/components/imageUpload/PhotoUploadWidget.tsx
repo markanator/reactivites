@@ -10,11 +10,13 @@ type Props = {
 };
 
 const PhotoUploadWidget = ({ handlePhotoUpload, isUploading }: Props) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [files, setFiles] = useState<any[]>([]);
 	const [cropper, setCropper] = useState<Cropper>();
 
 	function onCrop() {
 		if (cropper) {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			cropper.getCroppedCanvas().toBlob((blob) => handlePhotoUpload(blob!));
 		}
 	}
@@ -22,6 +24,7 @@ const PhotoUploadWidget = ({ handlePhotoUpload, isUploading }: Props) => {
 	useEffect(() => {
 		return () => {
 			// remove preview from memory
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			files?.forEach((file: any) => URL.revokeObjectURL(file?.preview));
 		};
 	}, [files]);

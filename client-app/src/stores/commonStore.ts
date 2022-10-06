@@ -30,6 +30,7 @@ export default class CommonStore {
 
 	setToken = (token: string | null) => {
 		// call reaction above
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		this.token = token!;
 	};
 	setAppLoaded = () => {

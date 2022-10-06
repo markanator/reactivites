@@ -6,7 +6,7 @@ const instance = axios.create({
 	baseURL: import.meta.env.VITE_API_URL,
 });
 
-instance.interceptors.request.use((config: AxiosRequestConfig<any>) => {
+instance.interceptors.request.use((config: AxiosRequestConfig<unknown>) => {
 	const token = store.commonStore.token;
 	if (token) {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -26,6 +26,7 @@ instance.interceptors.response.use(
 			return await Promise.reject(err);
 		}
 	},
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(err: AxiosError<any>) => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const { data, status, config } = err.response!;

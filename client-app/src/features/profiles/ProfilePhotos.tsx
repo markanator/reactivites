@@ -41,6 +41,8 @@ const ProfilePhotos = ({ profile }: Props) => {
 		deletePhoto(photo);
 	};
 
+	const photoCardBgColor = useColorModeValue("gray.100", "gray.600");
+
 	return (
 		<VStack alignItems="start" w="full">
 			<Flex justifyContent="space-between" w="full">
@@ -57,13 +59,7 @@ const ProfilePhotos = ({ profile }: Props) => {
 				) : (
 					<>
 						{profile?.photos?.map((photo) => (
-							<Box
-								key={photo.id}
-								flex="0 0 250px"
-								pos="relative"
-								bgColor={useColorModeValue("gray.100", "gray.600")}
-								p={4}
-							>
+							<Box key={photo.id} flex="0 0 250px" pos="relative" bgColor={photoCardBgColor} p={4}>
 								<Image src={photo?.url} w={350} />
 								{photo?.isMain && (
 									<Badge pos="absolute" top={4} left={4} variant="solid" colorScheme="blue">

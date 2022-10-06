@@ -1,6 +1,5 @@
 import {
 	Avatar,
-	Button,
 	Divider,
 	Flex,
 	GridItem,
