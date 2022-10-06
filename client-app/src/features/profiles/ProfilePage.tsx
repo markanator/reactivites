@@ -10,12 +10,16 @@ import ProfileHeader from "./ProfileHeader";
 const ProfilePage = () => {
 	const { username } = useParams<{ username: string }>();
 	const { profileStore } = useStoreContext();
-	const { isLoadingProfile, profile, loadProfile } = profileStore;
+	const { isLoadingProfile, profile, loadProfile, setActiveTab } = profileStore;
 
 	useEffect(() => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		loadProfile(username!);
-	}, [loadProfile, username]);
+
+		return () => {
+			setActiveTab(0);
+		};
+	}, [loadProfile, username, setActiveTab]);
 
 	if (isLoadingProfile) return <ScreenLoading content="Loading profile..." />;
 

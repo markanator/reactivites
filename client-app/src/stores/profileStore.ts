@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "~/async/fetcher/agent";
 import type { Photo, Profile } from "~/types";
 import { store } from "./store";
@@ -11,10 +11,28 @@ export default class ProfileStore {
 	isLoading = false;
 	isLoadingFollowings = false;
 	followings: Profile[] = [];
+	activeTab = 0;
 
 	constructor() {
 		makeAutoObservable(this);
+
+		reaction(
+			() => this.activeTab,
+			(activeTab) => {
+				if (activeTab === 3 || activeTab === 4) {
+					const predicate = activeTab === 3 ? "followers" : "following";
+					this.loadFollowings(predicate);
+				} else {
+					this.followings = [];
+				}
+			},
+		);
 	}
+
+	setActiveTab = (activeTab: number) => {
+		this.activeTab = activeTab;
+	};
+
 	// computed mobx value
 	get isCurrentUser() {
 		if (store.userStore?.user && this.profile) {
@@ -155,7 +173,7 @@ export default class ProfileStore {
 		}
 	};
 
-	loadFollowings = async (predicate: string) => {
+	loadFollowings = async (predicate: "following" | "followers") => {
 		this.isLoadingFollowings = true;
 		try {
 			const followings = await agent.Profiles.listFollowings(this.profile!.username, predicate);

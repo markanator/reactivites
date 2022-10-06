@@ -1,9 +1,11 @@
 import { Avatar, Center, Flex, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Profile } from "~/types";
+import FollowButton from "./FollowButton";
 
 type Props = {
 	profile: Profile;
+	showFollowButtons?: boolean;
 };
 
 const truncate = (str?: string) => {
@@ -12,7 +14,7 @@ const truncate = (str?: string) => {
 	}
 };
 
-const ProfileCard = ({ profile }: Props) => {
+const ProfileCard = ({ profile, showFollowButtons }: Props) => {
 	return (
 		<Center>
 			<Flex
@@ -54,6 +56,16 @@ const ProfileCard = ({ profile }: Props) => {
 				<Text color={useColorModeValue("gray.700", "gray.400")}>
 					{truncate(profile?.bio) || "No bio."}
 				</Text>
+				<Flex w="full" h="full">
+					{showFollowButtons && (
+						<FollowButton
+							stackProps={{ h: "full", maxH: "180px" }}
+							unfollowProps={{ size: "sm", mt: 2 }}
+							followProps={{ size: "sm", mt: 2 }}
+							profile={profile}
+						/>
+					)}
+				</Flex>
 			</Flex>
 		</Center>
 	);

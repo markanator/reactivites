@@ -9,8 +9,10 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { useStoreContext } from "~/stores/store";
 import { Profile } from "~/types";
 import ProfileAbout from "./ProfileAbout";
+import ProfileFollowings from "./ProfileFollowings";
 import ProfilePhotos from "./ProfilePhotos";
 
 type Props = {
@@ -18,9 +20,17 @@ type Props = {
 };
 
 const ProfileContent = ({ profile }: Props) => {
+	const { profileStore } = useStoreContext();
 	return (
 		<GridItem colSpan={2}>
-			<Tabs isLazy mt={6} orientation="vertical" variant="solid-rounded" colorScheme="twitter">
+			<Tabs
+				isLazy
+				mt={6}
+				onChange={(idx) => profileStore.setActiveTab(idx)}
+				orientation="vertical"
+				variant="solid-rounded"
+				colorScheme="twitter"
+			>
 				<TabPanels
 					mr={6}
 					bgColor={useColorModeValue("gray.100", "gray.700")}
@@ -38,10 +48,10 @@ const ProfileContent = ({ profile }: Props) => {
 						<p>3!</p>
 					</TabPanel>
 					<TabPanel>
-						<p>4!</p>
+						<ProfileFollowings />
 					</TabPanel>
 					<TabPanel>
-						<p>5!</p>
+						<ProfileFollowings />
 					</TabPanel>
 				</TabPanels>
 				<TabList>
