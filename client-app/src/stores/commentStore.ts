@@ -64,6 +64,7 @@ export class CommentStore {
   addComment = async (values: any) => {
     values.activityId = store.activityStore.selectedActivity?.id;
     try {
+      // don't need to add locally, we expect to RECIEVE the comment through WS
       await this.hubConnection?.invoke("SendComment", values);
     } catch (error) {
       console.log(error);

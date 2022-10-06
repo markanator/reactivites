@@ -16,6 +16,19 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { useStoreContext } from "~/stores/store";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { Form, Formik, FormikProps } from "formik";
+import InputTextArea from "~/components/forms/InputTextArea";
+import * as yup from "yup";
+
+const commentReplySchema = yup
+  .object({
+    body: yup
+      .string()
+      .min(2, "Comment to short")
+      .max(256, "Comment too large")
+      .required("Required"),
+  })
+  .required();
 
 dayjs.extend(relativeTime);
 
@@ -25,13 +38,14 @@ type Props = {
 
 const ActivityDetailedChat = ({ activityId }: Props) => {
   const { commentStore, userStore } = useStoreContext();
-  const { createHubConnection, clearComments, comments } = commentStore;
+  const { createHubConnection, clearComments, comments, addComment } =
+    commentStore;
   useEffect(() => {
     if (activityId) {
       createHubConnection(activityId);
     }
     return clearComments;
-  }, [activityId]);
+  }, [activityId, createHubConnection, clearComments]);
 
   return (
     <Flex
@@ -58,9 +72,9 @@ const ActivityDetailedChat = ({ activityId }: Props) => {
       >
         Comments
       </Heading>
-      <Flex flexDir="column" alignItems="flex-start">
+      <Flex flexDir="column" w="full">
         {/* AUTH REQUIRED */}
-        {!userStore.isLoggedIn && (
+        {!userStore.isLoggedIn ? (
           <Text mb={8}>
             You must be{" "}
             <Link textColor="blue.500" fontWeight={500}>
@@ -68,13 +82,58 @@ const ActivityDetailedChat = ({ activityId }: Props) => {
             </Link>{" "}
             to post a comment.
           </Text>
+        ) : (
+          <Formik
+            initialValues={{ body: "" }}
+            validationSchema={commentReplySchema}
+            onSubmit={(val, { resetForm }) => {
+              addComment(val).then(() => resetForm());
+            }}
+          >
+            {({
+              isSubmitting,
+              dirty,
+              isValid,
+              handleSubmit,
+            }: FormikProps<any>) => (
+              <Form>
+                <Box w="full" mb={6}>
+                  <HStack alignItems="start">
+                    <InputTextArea
+                      name="body"
+                      placeholder="Add a comment (Press Enter to submit, SHIFT + Enter for new line)"
+                      resize="vertical"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && e.shiftKey) {
+                          return;
+                        }
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          e.preventDefault();
+                          isValid && dirty && handleSubmit();
+                        }
+                      }}
+                    />
+                    <Button
+                      type="submit"
+                      isDisabled={!dirty || !isValid}
+                      isLoading={isSubmitting}
+                      colorScheme="teal"
+                      size="md"
+                    >
+                      Add Reply
+                    </Button>
+                  </HStack>
+                </Box>
+              </Form>
+            )}
+          </Formik>
         )}
 
         {userStore.isLoggedIn && (
           <Flex flexDir="column" w="full">
             {/* SINGLE COMMENT */}
             {comments.map((comm) => (
-              <Flex key={comm?.id} w="full" pos="relative" pt={1} mt={1}>
+              <Flex key={comm?.id} w="full" pos="relative" pt={1} mt={2}>
                 <Avatar
                   src={comm?.image ?? "/assets/user.png"}
                   name={comm?.displayName}
@@ -92,27 +151,15 @@ const ActivityDetailedChat = ({ activityId }: Props) => {
                       {dayjs(comm.createdAt).fromNow()}
                     </Text>
                   </Flex>
-                  <Text>{comm.body}</Text>
+                  <Text whiteSpace="pre-wrap">{comm.body}</Text>
                   <Flex>
-                    <Button variant="link" size="xs">
+                    {/* <Button variant="link" size="xs">
                       Reply
-                    </Button>
+                    </Button> */}
                   </Flex>
                 </Flex>
               </Flex>
             ))}
-
-            <Box w="full" mt={6}>
-              <HStack as="form" alignItems="start">
-                <Textarea
-                  name="comment"
-                  placeholder="Leave a comment or reply..."
-                ></Textarea>
-                <Button colorScheme="teal" size="md">
-                  Add Reply
-                </Button>
-              </HStack>
-            </Box>
           </Flex>
         )}
       </Flex>

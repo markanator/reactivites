@@ -12,14 +12,20 @@ import ActivityDetailedSideBar from "./ActivityDetailedSideBar";
 const ActivityDetails = () => {
   let { id } = useParams<{ id: string }>();
   const { activityStore } = useStoreContext();
-  const { selectedActivity, loadActivityFromId, isLoadingInitial } =
-    activityStore;
+  const {
+    selectedActivity,
+    loadActivityFromId,
+    isLoadingInitial,
+    clearSelectedActivity,
+  } = activityStore;
 
   useEffect(() => {
     if (id) {
       loadActivityFromId(id);
     }
-  }, [id, loadActivityFromId]);
+
+    return clearSelectedActivity;
+  }, [id, loadActivityFromId, clearSelectedActivity]);
 
   if (isLoadingInitial || !selectedActivity) return <ScreenLoading />;
   return (
