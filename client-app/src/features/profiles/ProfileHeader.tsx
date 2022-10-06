@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Profile } from "~/types";
+import FollowButton from "./FollowButton";
 
 type Props = {
 	profile: Profile;
@@ -42,14 +43,8 @@ const ProfileHeader = ({ profile }: Props) => {
 						<StatBlock label="Following" value={profile.followingCount} />
 					</HStack>
 					<Divider />
-					<HStack spacing={4} w="full">
-						<Button w="full" colorScheme={"green"}>
-							Follow
-						</Button>
-						<Button w="full" colorScheme={"red"}>
-							Unfollow
-						</Button>
-					</HStack>
+					{/* FOLLOW BUTTONS */}
+					<FollowButton profile={profile} />
 				</VStack>
 			</Flex>
 		</GridItem>

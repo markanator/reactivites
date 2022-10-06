@@ -136,6 +136,7 @@ export default class ProfileStore {
 					following ? this.profile.followersCount++ : this.profile.followersCount--;
 					this.profile.following = !this.profile.following;
 				}
+				// update the authenticated user's follow-ers/ings
 				if (this.profile && this.profile.username === store.userStore.user?.username) {
 					following ? this.profile.followingCount++ : this.profile.followingCount--;
 				}
