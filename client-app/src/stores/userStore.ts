@@ -17,7 +17,6 @@ export default class UserStore {
   login = async (creds: UserFormValues) => {
     try {
       const user = await agent.Account.login(creds);
-      console.log("USER FROM LOGIN", user);
       store.commonStore.setToken(user.token);
       // this.startRefreshTokenTimer(user);
       // required to mutate mobx, in async block

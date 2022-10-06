@@ -11,4 +11,7 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./test/setup-test-env.ts"],
   },
+  server: {
+    port: 3000,
+  },
 });
