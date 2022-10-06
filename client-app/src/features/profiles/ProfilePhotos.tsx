@@ -2,7 +2,6 @@ import {
 	Badge,
 	Box,
 	Button,
-	ButtonGroup,
 	Flex,
 	Heading,
 	IconButton,
@@ -101,19 +100,6 @@ const ProfilePhotos = ({ profile }: Props) => {
 				)}
 			</Flex>
 		</VStack>
-	);
-};
-
-const ImageCard = ({ photo }: { photo?: Photo }) => {
-	return (
-		<Box pos="relative" flex="0 0 250px" bgColor={useColorModeValue("gray.100", "gray.600")} p={4}>
-			<Image src={photo?.url} w={350} />
-			{photo?.isMain && (
-				<Badge pos="absolute" top={4} left={4} variant="solid" colorScheme="blue">
-					Main
-				</Badge>
-			)}
-		</Box>
 	);
 };
 

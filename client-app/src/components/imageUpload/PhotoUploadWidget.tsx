@@ -1,16 +1,6 @@
-import {
-	Box,
-	Button,
-	ButtonGroup,
-	Flex,
-	HStack,
-	Image,
-	SimpleGrid,
-	Text,
-	VStack,
-} from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PhotoWidgetCropper from "./PhotoWidgetCropper";
 import PhotoWidgetDropzone from "./PhotoWidgetDropzone";
 

@@ -4,9 +4,7 @@ import { useState } from "react";
 import { useStoreContext } from "~/stores/store";
 import ProfileEditForm from "./ProfileEditForm";
 
-type Props = {};
-
-const ProfileAbout = (props: Props) => {
+const ProfileAbout = () => {
 	const { profileStore } = useStoreContext();
 	const { isCurrentUser, profile } = profileStore;
 	const [isEditMode, setIsEditMode] = useState(false);

@@ -1,15 +1,12 @@
 import {
-	useDisclosure,
 	Button,
 	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalCloseButton,
 	ModalBody,
-	ModalFooter,
+	ModalCloseButton,
+	ModalContent,
+	ModalOverlay,
+	useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
 import LoginForm from "./LoginForm";
 
 const LoginModal = () => {

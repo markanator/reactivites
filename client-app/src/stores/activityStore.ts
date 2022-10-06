@@ -19,6 +19,7 @@ export default class ActivityStore {
 
 	get activitiesByDate() {
 		return Array.from(this.activityRegistry.values()).sort(
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			(a, b) => a.date!.getTime() - b.date!.getTime(),
 		);
 	}
@@ -72,10 +73,11 @@ export default class ActivityStore {
 	private addActivityToRegistry = (activity: Activity) => {
 		const user = store.userStore.user;
 		if (user) {
-			activity.isGoing = activity.attendees!.some((a) => a.username === user.username);
+			activity.isGoing = activity.attendees.some((a) => a.username === user.username);
 			activity.isHost = activity.hostUsername === user.username;
 			activity.host = activity.attendees?.find((x) => x.username === activity.hostUsername);
 		}
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		activity.date = new Date(activity.date!);
 		this.activityRegistry.set(activity.id, activity);
 	};
@@ -83,6 +85,7 @@ export default class ActivityStore {
 		return this.activityRegistry.get(id);
 	};
 	private setSelectedActivity = (activity: Activity) => {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		activity.date = new Date(activity.date!);
 		this.selectedActivity = activity;
 	};
@@ -119,7 +122,7 @@ export default class ActivityStore {
 						...this.getActivityFromRegistry(activity.id),
 						...activity,
 					};
-					this.activityRegistry.set(activity.id!, updatedActivity as Activity);
+					this.activityRegistry.set(activity.id, updatedActivity as Activity);
 					this.selectedActivity = updatedActivity as Activity;
 				}
 			});
@@ -147,6 +150,7 @@ export default class ActivityStore {
 		const user = store.userStore.user;
 		this.isLoading = true;
 		try {
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			await agent.Activities.attend(this.selectedActivity!.id);
 			runInAction(() => {
 				// already going, filter them out
@@ -157,10 +161,13 @@ export default class ActivityStore {
 					this.selectedActivity.isGoing = false;
 				} else {
 					// not going, add them in
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					const attendee = new Profile(user!);
 					this.selectedActivity?.attendees?.push(attendee);
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					this.selectedActivity!.isGoing = true;
 				}
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
 			});
 		} catch (error) {
@@ -174,9 +181,12 @@ export default class ActivityStore {
 		this.isLoading = true;
 		try {
 			// backend takes care of host cancelling logic
+			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			await agent.Activities.attend(this.selectedActivity!.id);
 			runInAction(() => {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				this.selectedActivity!.isCancelled = !this.selectedActivity?.isCancelled;
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 				this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
 			});
 		} catch (error) {

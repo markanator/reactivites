@@ -13,7 +13,7 @@ interface LoginFormVals {
 const LoginForm = () => {
 	const { userStore } = useStoreContext();
 	const onSubmit = (v: any, { setErrors, setSubmitting }: FormikHelpers<any>) => {
-		userStore.login(v).catch((err) => {
+		userStore.login(v).catch(() => {
 			setSubmitting(false);
 			setErrors({ error: "Invalid email or password" });
 		});

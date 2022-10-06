@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "~/async/fetcher/agent";
 import type { Photo, Profile } from "~/types";

@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { store } from "~/stores/store";
 import { sleep } from "../../utils/sleeper";
@@ -10,6 +9,7 @@ const instance = axios.create({
 instance.interceptors.request.use((config: AxiosRequestConfig<any>) => {
 	const token = store.commonStore.token;
 	if (token) {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		config.headers!.authorization = `Bearer ${token}`;
 	}
 
@@ -27,6 +27,7 @@ instance.interceptors.response.use(
 		}
 	},
 	(err: AxiosError<any>) => {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		const { data, status, config } = err.response!;
 		switch (status) {
 			case 400:
@@ -37,6 +38,7 @@ instance.interceptors.response.use(
 						position: "bottom-right",
 					});
 				}
+				// eslint-disable-next-line no-prototype-builtins
 				if (config.method === "get" && data?.errors.hasOwnProperty("id")) {
 					window?.navigate("/not-found");
 				}

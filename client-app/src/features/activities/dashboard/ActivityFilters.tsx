@@ -1,21 +1,7 @@
-import { EmailIcon } from "@chakra-ui/icons";
-import {
-	Box,
-	Button,
-	Flex,
-	Heading,
-	ListItem,
-	Text,
-	UnorderedList,
-	useColorModeValue,
-	VStack,
-} from "@chakra-ui/react";
-import React from "react";
+import { Flex, Heading, ListItem, UnorderedList, useColorModeValue } from "@chakra-ui/react";
 import Calendar from "react-calendar";
 
-type Props = {};
-
-const ActivityFilters = (props: Props) => {
+const ActivityFilters = () => {
 	return (
 		<>
 			<Flex
@@ -46,8 +32,8 @@ const ActivityFilters = (props: Props) => {
 				</Heading>
 				<UnorderedList listStyleType="none" m={0}>
 					<ListItemWrapper>All Activities</ListItemWrapper>
-					<ListItemWrapper>I'm going</ListItemWrapper>
-					<ListItemWrapper>I'm hosting</ListItemWrapper>
+					<ListItemWrapper>I&apos;m going</ListItemWrapper>
+					<ListItemWrapper>I&apos;m hosting</ListItemWrapper>
 				</UnorderedList>
 			</Flex>
 			<Calendar />
@@ -55,7 +41,7 @@ const ActivityFilters = (props: Props) => {
 	);
 };
 
-const ListItemWrapper = ({ children }: any) => {
+const ListItemWrapper = ({ children }: { children?: React.ReactNode }) => {
 	return (
 		<ListItem
 			display="flex"

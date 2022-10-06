@@ -1,17 +1,6 @@
-import {
-	Avatar,
-	Badge,
-	Flex,
-	Heading,
-	ListItem,
-	Text,
-	UnorderedList,
-	useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, Heading, Text, UnorderedList, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { Link } from "react-router-dom";
-import { Activity, Profile } from "~/types";
+import { Activity } from "~/types";
 import { AttendeeListItem } from "./Sidebar.helper";
 
 type Props = {
@@ -19,7 +8,7 @@ type Props = {
 };
 
 const ActivityDetailedSideBar = ({ activity }: Props) => {
-	const { attendees, host, hostUsername } = activity;
+	const { attendees, hostUsername } = activity;
 	return (
 		<Flex flexDir="column" p={4} bg={useColorModeValue("white", "gray.700")} boxShadow={"sm"}>
 			<Flex mb={8} alignItems="center">

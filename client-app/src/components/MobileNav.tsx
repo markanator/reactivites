@@ -1,17 +1,13 @@
-import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-	useColorModeValue,
-	Stack,
-	Popover,
-	PopoverTrigger,
-	Link,
-	PopoverContent,
 	Collapse,
-	Icon,
-	Text,
 	Flex,
+	Icon,
+	Link,
+	Stack,
+	Text,
+	useColorModeValue,
 	useDisclosure,
-	Box,
 } from "@chakra-ui/react";
 
 export const MobileNav = () => {

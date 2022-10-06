@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import DatePicker, { ReactDatePickerProps } from "react-datepicker";
-import styles from "./datepicker.module.css";
 
 type Props = Partial<ReactDatePickerProps> & {
 	name: string;

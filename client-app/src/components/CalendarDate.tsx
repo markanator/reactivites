@@ -1,7 +1,6 @@
-import { Flex, Box, useColorMode, useColorModeValue } from "@chakra-ui/react";
-// import { Box } from 'framer-motion'
-import React, { useMemo } from "react";
+import { Box, Flex, useColorModeValue } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useMemo } from "react";
 
 type Props = {
 	date: Date | string;

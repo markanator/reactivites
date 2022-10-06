@@ -1,11 +1,11 @@
-import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
+import { Flex, Spinner, Text } from "@chakra-ui/react";
 
 type Props = {
 	inverted?: boolean;
 	content?: string;
 };
 
-const ScreenLoading = ({ inverted = true, content = "Loading..." }: Props) => {
+const ScreenLoading = ({ content = "Loading..." }: Props) => {
 	return (
 		<Flex
 			flexDir="column"

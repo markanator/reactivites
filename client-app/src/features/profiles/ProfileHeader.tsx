@@ -1,19 +1,16 @@
 import {
 	Avatar,
-	Box,
 	Button,
 	Divider,
 	Flex,
 	GridItem,
 	Heading,
 	HStack,
-	SimpleGrid,
 	Text,
 	useColorModeValue,
 	VStack,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { Profile } from "~/types";
 
 type Props = {

@@ -1,10 +1,9 @@
-import { Box, Button, Container, Heading, Text, useColorModeValue, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, useColorModeValue, VStack } from "@chakra-ui/react";
 import { ErrorMessage, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import * as yup from "yup";
 import InputField from "~/components/forms/Input";
 import { useStoreContext } from "~/stores/store";
-import * as yup from "yup";
 import ValidationErrors from "../errors/ValidationErrors";
 
 const initialState = {

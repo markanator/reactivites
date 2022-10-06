@@ -1,20 +1,19 @@
-import { Container, Grid, SimpleGrid } from "@chakra-ui/react";
+import { Container, Grid } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ScreenLoading from "~/components/ScreenLoading";
 import { useStoreContext } from "~/stores/store";
 import ProfileContent from "./ProfileContent";
 import ProfileHeader from "./ProfileHeader";
 
-type Props = {};
-
-const ProfilePage = (props: Props) => {
+const ProfilePage = () => {
 	const { username } = useParams<{ username: string }>();
 	const { profileStore } = useStoreContext();
 	const { isLoadingProfile, profile, loadProfile } = profileStore;
 
 	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		loadProfile(username!);
 	}, [loadProfile, username]);
 

@@ -5,8 +5,6 @@ import { useStoreContext } from "~/stores/store";
 import ScreenLoading from "~/components/ScreenLoading";
 import { useAttachScripts } from "../hooks/useAttachScripts";
 
-type Props = {};
-
 const App = () => {
 	useAttachScripts();
 	const { commonStore, userStore } = useStoreContext();
@@ -16,7 +14,7 @@ const App = () => {
 		} else {
 			commonStore.setAppLoaded();
 		}
-	}, [commonStore.token, userStore]);
+	}, [commonStore, userStore]);
 
 	if (!commonStore.appLoaded) return <ScreenLoading />;
 	return (

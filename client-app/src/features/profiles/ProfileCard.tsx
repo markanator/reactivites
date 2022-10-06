@@ -1,20 +1,5 @@
-import {
-	Center,
-	useColorModeValue,
-	Avatar,
-	Text,
-	Heading,
-	Stack,
-	Badge,
-	Button,
-	Box,
-	Flex,
-	VStack,
-	HStack,
-} from "@chakra-ui/react";
+import { Avatar, Center, Flex, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import React from "react";
-import { Link } from "react-router-dom";
 import { Profile } from "~/types";
 
 type Props = {

@@ -58,6 +58,7 @@ const ActivityListItem = ({ activity }: Props) => {
 
 			<Flex p={4} overflow="hidden" justifyContent="space-between" alignItems="center">
 				<Flex w="full">
+					{/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
 					<CalendarDate date={date!} />
 					<Flex flexDir="column" w="full">
 						<Heading

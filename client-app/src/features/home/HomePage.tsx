@@ -5,9 +5,7 @@ import { useStoreContext } from "~/stores/store";
 import LoginModal from "../users/LoginModal";
 import RegisterModal from "../users/RegisterModal";
 
-type Props = {};
-
-const HomePage = (props: Props) => {
+const HomePage = () => {
 	const {
 		userStore: { isLoggedIn },
 	} = useStoreContext();

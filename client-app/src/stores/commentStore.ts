@@ -12,10 +12,11 @@ export class CommentStore {
 	}
 
 	createHubConnection = (activityId: string) => {
-		if (store.activityStore.selectedActivity) {
+		if (store.activityStore.selectedActivity && store.userStore?.user?.token) {
 			this.hubConnection = new HubConnectionBuilder()
 				.withUrl(import.meta.env.VITE_CHAT_URL + "?activityId=" + activityId, {
-					accessTokenFactory: () => store.userStore.user?.token!,
+					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+					accessTokenFactory: () => store.userStore.user!.token,
 				})
 				.withAutomaticReconnect() // attempts to reconnect
 				.configureLogging(LogLevel.Information) // log information
@@ -53,7 +54,7 @@ export class CommentStore {
 		this.stopHubConnection();
 	};
 
-	addComment = async (values: any) => {
+	addComment = async (values: { body: string; activityId?: string }) => {
 		values.activityId = store.activityStore.selectedActivity?.id;
 		try {
 			// don't need to add locally, we expect to RECIEVE the comment through WS

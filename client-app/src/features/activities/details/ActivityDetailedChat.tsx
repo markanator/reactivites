@@ -7,18 +7,16 @@ import {
 	HStack,
 	Link,
 	Text,
-	Textarea,
 	useColorModeValue,
-	VStack,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
-import { useStoreContext } from "~/stores/store";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Form, Formik, FormikProps } from "formik";
-import InputTextArea from "~/components/forms/InputTextArea";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 import * as yup from "yup";
+import InputTextArea from "~/components/forms/InputTextArea";
+import { useStoreContext } from "~/stores/store";
 
 const commentReplySchema = yup
 	.object({
