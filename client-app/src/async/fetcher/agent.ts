@@ -7,56 +7,52 @@ import axios from "./index";
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-  get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-  post: <T>(url: string, body: {}, config: AxiosRequestConfig<any> = {}) =>
-    axios.post<T>(url, body, config).then(responseBody),
-  put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+	get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+	post: <T>(url: string, body: {}, config: AxiosRequestConfig<any> = {}) =>
+		axios.post<T>(url, body, config).then(responseBody),
+	put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
+	del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Activities = {
-  list: (params?: URLSearchParams) =>
-    axios.get<Activity[]>("/activities", { params }).then(responseBody),
-  details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-  create: (activity: ActivityFormValues) =>
-    requests.post<void>("/activities", activity),
-  update: (activity: ActivityFormValues) =>
-    requests.put<void>(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.del<void>(`/activities/${id}`),
-  attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {}),
+	list: (params?: URLSearchParams) =>
+		axios.get<Activity[]>("/activities", { params }).then(responseBody),
+	details: (id: string) => requests.get<Activity>(`/activities/${id}`),
+	create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
+	update: (activity: ActivityFormValues) =>
+		requests.put<void>(`/activities/${activity.id}`, activity),
+	delete: (id: string) => requests.del<void>(`/activities/${id}`),
+	attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {}),
 };
 
 const Account = {
-  current: () => requests.get<User>("/account"),
-  login: (user: UserFormValues) => requests.post<User>("/account/login", user),
-  register: (user: UserFormValues) =>
-    requests.post<User>("/account/register", user),
+	current: () => requests.get<User>("/account"),
+	login: (user: UserFormValues) => requests.post<User>("/account/login", user),
+	register: (user: UserFormValues) => requests.post<User>("/account/register", user),
 };
 
 const Profiles = {
-  get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
-  uploadPhoto: (file: Blob) => {
-    let formData = new FormData();
-    formData.append("File", file);
-    return requests.post<Photo>("photos", formData, {
-      headers: { "Content-type": "multipart/form-data" },
-    });
-  },
-  setMainPhoto: (id: string) =>
-    requests.post<void>(`/photos/${id}/setMain`, {}),
-  deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
-  updateProfile: (profile: Pick<Profile, "bio" | "displayName">) =>
-    requests.put<void>(`/profiles`, profile),
-  updateFollowing: (username: string) =>
-    requests.post<void>(`/follow/${username}`, {}),
-  listFollowings: (username: string, predicate: string) =>
-    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+	get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+	uploadPhoto: (file: Blob) => {
+		const formData = new FormData();
+		formData.append("File", file);
+		return requests.post<Photo>("photos", formData, {
+			headers: { "Content-type": "multipart/form-data" },
+		});
+	},
+	setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
+	deletePhoto: (id: string) => requests.del<void>(`/photos/${id}`),
+	updateProfile: (profile: Pick<Profile, "bio" | "displayName">) =>
+		requests.put<void>(`/profiles`, profile),
+	updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
+	listFollowings: (username: string, predicate: string) =>
+		requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
 };
 
 const agent = {
-  Activities,
-  Account,
-  Profiles,
+	Activities,
+	Account,
+	Profiles,
 };
 
 export default agent;

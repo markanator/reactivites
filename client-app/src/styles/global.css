@@ -1,29 +1,27 @@
 .react-calendar {
-  width: 100%;
-  border: none;
-  box-shadow: var(--chakra-shadows-sm);
-  font-family: "Inter", sans-serif;
-  color: var(--chakra-colors-chakra-body-text);
+	width: 100%;
+	border: none;
+	box-shadow: var(--chakra-shadows-sm);
+	font-family: "Inter", sans-serif;
+	color: var(--chakra-colors-chakra-body-text);
 }
 
 body.chakra-ui-dark .react-calendar {
-  background-color: var(--chakra-colors-gray-700);
+	background-color: var(--chakra-colors-gray-700);
 }
 
 body.chakra-ui-dark .react-calendar .react-calendar__tile--now {
-  background-color: var(--chakra-colors-yellow-500);
+	background-color: var(--chakra-colors-yellow-500);
 }
 
 body.chakra-ui-dark .react-calendar .react-calendar__tile:enabled:hover {
-  color: var(--chakra-colors-black);
-  background-color: var(--chakra-colors-gray-200);
+	color: var(--chakra-colors-black);
+	background-color: var(--chakra-colors-gray-200);
 }
 
-body.chakra-ui-dark
-  .react-calendar
-  .react-calendar__month-view__days__day--weekend {
-  color: var(--chakra-colors-red-400);
+body.chakra-ui-dark .react-calendar .react-calendar__month-view__days__day--weekend {
+	color: var(--chakra-colors-red-400);
 }
 body.chakra-ui-dark .react-calendar .react-calendar__tile--active {
-  color: var(--chakra-colors-chakra-body-text);
+	color: var(--chakra-colors-chakra-body-text);
 }

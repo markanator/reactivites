@@ -8,22 +8,22 @@ import { useAttachScripts } from "../hooks/useAttachScripts";
 type Props = {};
 
 const App = () => {
-  useAttachScripts();
-  const { commonStore, userStore } = useStoreContext();
-  useEffect(() => {
-    if (commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setAppLoaded());
-    } else {
-      commonStore.setAppLoaded();
-    }
-  }, [commonStore.token, userStore]);
+	useAttachScripts();
+	const { commonStore, userStore } = useStoreContext();
+	useEffect(() => {
+		if (commonStore.token) {
+			userStore.getUser().finally(() => commonStore.setAppLoaded());
+		} else {
+			commonStore.setAppLoaded();
+		}
+	}, [commonStore.token, userStore]);
 
-  if (!commonStore.appLoaded) return <ScreenLoading />;
-  return (
-    <>
-      <Outlet />
-    </>
-  );
+	if (!commonStore.appLoaded) return <ScreenLoading />;
+	return (
+		<>
+			<Outlet />
+		</>
+	);
 };
 
 export default observer(App);

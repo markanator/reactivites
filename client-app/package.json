@@ -9,7 +9,10 @@
 		"build": "tsc && vite build",
 		"preview": "vite preview",
 		"lint": "eslint src/**/*.{ts,tsx}",
-		"lint:": "npm run lint -- --fix"
+		"lint:fix": "npm run lint -- --fix",
+		"prettier": "npx prettier src test --check",
+		"prettier:fix": "npm run prettier -- --write",
+		"format": "npm run prettier:fix && npm run lint:fix"
 	},
 	"dependencies": {
 		"@chakra-ui/icons": "^2.0.11",

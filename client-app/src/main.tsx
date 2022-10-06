@@ -8,11 +8,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./styles/global.css";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <>
-    <StoreContextProvider>
-      <ChakraProvider resetCSS>
-        <RouterProvider router={router} />
-      </ChakraProvider>
-    </StoreContextProvider>
-  </>
+	<>
+		<StoreContextProvider>
+			<ChakraProvider resetCSS>
+				<RouterProvider router={router} />
+			</ChakraProvider>
+		</StoreContextProvider>
+	</>,
 );

@@ -10,40 +10,36 @@ import ActivityDetailedInfo from "./ActivityDetailedInfo";
 import ActivityDetailedSideBar from "./ActivityDetailedSideBar";
 
 const ActivityDetails = () => {
-  let { id } = useParams<{ id: string }>();
-  const { activityStore } = useStoreContext();
-  const {
-    selectedActivity,
-    loadActivityFromId,
-    isLoadingInitial,
-    clearSelectedActivity,
-  } = activityStore;
+	const { id } = useParams<{ id: string }>();
+	const { activityStore } = useStoreContext();
+	const { selectedActivity, loadActivityFromId, isLoadingInitial, clearSelectedActivity } =
+		activityStore;
 
-  useEffect(() => {
-    if (id) {
-      loadActivityFromId(id);
-    }
+	useEffect(() => {
+		if (id) {
+			loadActivityFromId(id);
+		}
 
-    return clearSelectedActivity;
-  }, [id, loadActivityFromId, clearSelectedActivity]);
+		return clearSelectedActivity;
+	}, [id, loadActivityFromId, clearSelectedActivity]);
 
-  if (isLoadingInitial || !selectedActivity) return <ScreenLoading />;
-  return (
-    <Flex flexDir="column" h="full" pb={20}>
-      <ActivityDetailedHeader activity={selectedActivity} />
-      <Container maxW={"8xl"} pt={4}>
-        <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-          <GridItem colSpan={2}>
-            <ActivityDetailedInfo activity={selectedActivity} />
-            <ActivityDetailedChat activityId={selectedActivity.id} />
-          </GridItem>
-          <GridItem>
-            <ActivityDetailedSideBar activity={selectedActivity} />
-          </GridItem>
-        </Grid>
-      </Container>
-    </Flex>
-  );
+	if (isLoadingInitial || !selectedActivity) return <ScreenLoading />;
+	return (
+		<Flex flexDir="column" h="full" pb={20}>
+			<ActivityDetailedHeader activity={selectedActivity} />
+			<Container maxW={"8xl"} pt={4}>
+				<Grid templateColumns="repeat(3, 1fr)" gap={6}>
+					<GridItem colSpan={2}>
+						<ActivityDetailedInfo activity={selectedActivity} />
+						<ActivityDetailedChat activityId={selectedActivity.id} />
+					</GridItem>
+					<GridItem>
+						<ActivityDetailedSideBar activity={selectedActivity} />
+					</GridItem>
+				</Grid>
+			</Container>
+		</Flex>
+	);
 };
 
 export default observer(ActivityDetails);

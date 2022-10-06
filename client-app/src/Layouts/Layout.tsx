@@ -4,12 +4,12 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const Layout = () => {
-  return (
-    <Flex flexDir="column">
-      <Navbar />
-      <Outlet />
-    </Flex>
-  );
+	return (
+		<Flex flexDir="column">
+			<Navbar />
+			<Outlet />
+		</Flex>
+	);
 };
 
 export default Layout;
