@@ -43,6 +43,8 @@ namespace API.Extensions
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             // add cloud photo config
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
+            // adds signalR support
+            services.AddSignalR();
 
             return services;
         }
