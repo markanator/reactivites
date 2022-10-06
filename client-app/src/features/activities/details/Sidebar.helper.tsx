@@ -44,15 +44,17 @@ export const AttendeeListItem = observer(
             </Badge>
           )}
         </Flex>
-        <Text
-          mt={-1}
-          fontSize="sm"
-          fontWeight={500}
-          letterSpacing="wide"
-          textColor="orange"
-        >
-          Following
-        </Text>
+        {attendee.following && (
+          <Text
+            mt={-1}
+            fontSize="sm"
+            fontWeight={500}
+            letterSpacing="wide"
+            textColor="orange"
+          >
+            Following
+          </Text>
+        )}
       </Flex>
     </ListItem>
   )

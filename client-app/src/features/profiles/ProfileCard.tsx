@@ -55,9 +55,9 @@ const ProfileCard = ({ profile }: Props) => {
               <Text fontWeight={600} color={"gray.500"}>
                 @{profile.username}
               </Text>
-              <Flex alignItems="baseline">
+              <Flex alignItems="baseline" mt={1}>
                 <Text ml={4} fontWeight={600}>
-                  23k
+                  {profile.followersCount}
                 </Text>
                 <Text ml={1} fontSize={"sm"} color={"gray.500"}>
                   Followers

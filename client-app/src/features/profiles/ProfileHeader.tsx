@@ -41,8 +41,8 @@ const ProfileHeader = ({ profile }: Props) => {
         </Flex>
         <VStack>
           <HStack mb={2} spacing={8}>
-            <StatBlock label="Followers" value={500} />
-            <StatBlock label="Following" value={100} />
+            <StatBlock label="Followers" value={profile.followersCount} />
+            <StatBlock label="Following" value={profile.followingCount} />
           </HStack>
           <Divider />
           <HStack spacing={4} w="full">

@@ -199,4 +199,19 @@ export default class ActivityStore {
       runInAction(() => (this.isLoading = false));
     }
   };
+
+  updateAttendeeFollowing = (username: string) => {
+    this.activityRegistry.forEach((activity) => {
+      activity.attendees.forEach((attendee) => {
+        if (attendee.username === username) {
+          // decrement following, increment followers
+          attendee.following
+            ? attendee.followersCount--
+            : attendee.followersCount++;
+          // set as opposite
+          attendee.following = !attendee.following;
+        }
+      });
+    });
+  };
 }
