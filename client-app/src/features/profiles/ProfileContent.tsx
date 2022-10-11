@@ -12,6 +12,7 @@ import React from "react";
 import { useStoreContext } from "~/stores/store";
 import { Profile } from "~/types";
 import ProfileAbout from "./ProfileAbout";
+import ProfileActivities from "./ProfileActivities";
 import ProfileFollowings from "./ProfileFollowings";
 import ProfilePhotos from "./ProfilePhotos";
 
@@ -45,7 +46,7 @@ const ProfileContent = ({ profile }: Props) => {
 						<ProfilePhotos profile={profile} />
 					</TabPanel>
 					<TabPanel>
-						<p>3!</p>
+						<ProfileActivities />
 					</TabPanel>
 					<TabPanel>
 						<ProfileFollowings />

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "~/async/fetcher/agent";
-import type { Photo, Profile } from "~/types";
+import type { Photo, Profile, UserActivity } from "~/types";
 import { store } from "./store";
 
 export default class ProfileStore {
@@ -12,6 +12,8 @@ export default class ProfileStore {
 	isLoadingFollowings = false;
 	followings: Profile[] = [];
 	activeTab = 0;
+	isLoadingActivities = false;
+	userActivities: UserActivity[] = [];
 
 	constructor() {
 		makeAutoObservable(this);
@@ -183,6 +185,22 @@ export default class ProfileStore {
 			});
 		} catch (error) {
 			runInAction(() => (this.isLoadingFollowings = false));
+		}
+	};
+
+	loadUserActivities = async (username: string, predicate?: string) => {
+		this.isLoadingActivities = true;
+		try {
+			const newActivities = await agent.Profiles.listActivities(username, predicate!);
+			runInAction(() => {
+				this.userActivities = newActivities;
+				this.isLoadingActivities = false;
+			});
+		} catch (error) {
+			console.log(error);
+			runInAction(() => {
+				this.isLoadingActivities = false;
+			});
 		}
 	};
 }

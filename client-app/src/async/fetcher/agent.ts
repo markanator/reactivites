@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserFormValues } from "~/features/users/utils";
 import { ActivityFormValues } from "~/lib/ActivityFormValues";
 import { PaginationResults } from "~/lib/PaginationResults";
-import { Activity, Photo, Profile, User } from "~/types";
+import { Activity, Photo, Profile, User, UserActivity } from "~/types";
 import axios from "./index";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
@@ -48,6 +48,8 @@ const Profiles = {
 	updateFollowing: (username: string) => requests.post<void>(`/follow/${username}`, {}),
 	listFollowings: (username: string, predicate: string) =>
 		requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+	listActivities: (username: string, predicate: string) =>
+		requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`),
 };
 
 const agent = {
