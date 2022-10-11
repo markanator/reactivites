@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import agent from "src/async/fetcher/agent";
 import type { Activity, PaginationHeader, User } from "~/types";
 import dayjs from "dayjs";
@@ -16,9 +16,20 @@ export default class ActivityStore {
 	//  pagination support
 	pagination: PaginationHeader | null = null;
 	pagingParams = new PaginationParams();
+	predicate = new Map().set("all", true);
 
 	constructor() {
 		makeAutoObservable(this);
+
+		reaction(
+			() => this.predicate.keys(),
+			() => {
+				// reset always
+				this.pagingParams = new PaginationParams();
+				this.activityRegistry.clear();
+				this.loadActivities();
+			},
+		);
 	}
 
 	setPagingParams = (paginationParams: PaginationParams) => {
@@ -29,8 +40,46 @@ export default class ActivityStore {
 		const params = new URLSearchParams();
 		params.append("pageNumber", this.pagingParams.pageNumber.toString());
 		params.append("pageSize", this.pagingParams.pageSize.toString());
+
+		this.predicate.forEach((val, key) => {
+			if (key === "startDate") {
+				params.append(key, (val as Date).toISOString());
+			} else {
+				params.append(key, val);
+			}
+		});
+
 		return params;
 	}
+
+	setPredicate = (pred: string, value: string | Date) => {
+		const resetPredicate = () => {
+			this.predicate.forEach((_v, key) => {
+				if (key !== "startDate") this.predicate.delete(key);
+			});
+		};
+		switch (pred) {
+			case "all":
+				resetPredicate();
+				this.predicate.set("all", "true");
+				break;
+			case "isGoing":
+				resetPredicate();
+				this.predicate.set("isGoing", "true");
+				break;
+			case "isHost":
+				resetPredicate();
+				this.predicate.set("isHost", "true");
+				break;
+			case "startDate":
+				resetPredicate();
+				this.predicate.delete("startDate");
+				this.predicate.set("startDate", value);
+				break;
+			default:
+				break;
+		}
+	};
 
 	get activitiesByDate() {
 		return Array.from(this.activityRegistry.values()).sort(

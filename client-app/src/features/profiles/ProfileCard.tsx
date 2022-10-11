@@ -10,7 +10,7 @@ type Props = {
 
 const truncate = (str?: string) => {
 	if (str) {
-		return str.length > 40 ? str.substring(0, 37) + "..." : str;
+		return str.length > 30 ? str.substring(0, 30) + "..." : str;
 	}
 };
 
