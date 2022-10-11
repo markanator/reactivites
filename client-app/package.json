@@ -34,6 +34,7 @@
 		"react-datepicker": "^4.8.0",
 		"react-dom": "^18.2.0",
 		"react-dropzone": "^14.2.2",
+		"react-infinite-scroller": "^1.2.6",
 		"react-router-dom": "^6.4.2",
 		"uuid": "^9.0.0",
 		"yup": "^0.32.11"
@@ -48,6 +49,7 @@
 		"@types/react-calendar": "^3.5.3",
 		"@types/react-datepicker": "^4.4.2",
 		"@types/react-dom": "^18.0.6",
+		"@types/react-infinite-scroller": "^1.2.3",
 		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^5.39.0",
 		"@typescript-eslint/parser": "^5.39.0",

@@ -1,14 +1,25 @@
-import { Container, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Container, GridItem, SimpleGrid, Spinner } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroller";
 import ScreenLoading from "~/components/ScreenLoading";
+import { PaginationParams } from "~/lib/PaginationParams";
 import { useStoreContext } from "~/stores/store";
 import ActivityFilters from "./ActivityFilters";
 import ActivityList from "./ActivityList";
 
 const ActivityDashboard = () => {
+	const [loadingNext, setLoadingNext] = useState(false);
 	const { activityStore } = useStoreContext();
-	const { loadActivities, isLoadingInitial, activityRegistry } = activityStore;
+	const { loadActivities, isLoadingInitial, activityRegistry, setPagingParams, pagination } =
+		activityStore;
+
+	const handleGetNext = () => {
+		setLoadingNext(true);
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		setPagingParams(new PaginationParams(pagination!.currentPage + 1));
+		loadActivities().then(() => setLoadingNext(false));
+	};
 
 	useEffect(() => {
 		if (activityRegistry.size <= 1) {
@@ -16,7 +27,7 @@ const ActivityDashboard = () => {
 		}
 	}, [activityRegistry.size, loadActivities]);
 
-	if (isLoadingInitial) {
+	if (isLoadingInitial && !loadingNext) {
 		return <ScreenLoading content="Loading activities..." />;
 	}
 
@@ -45,7 +56,15 @@ const ActivityDashboard = () => {
 					}}
 					mb={8}
 				>
-					<ActivityList />
+					<InfiniteScroll
+						pageStart={0}
+						loadMore={handleGetNext}
+						hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
+						initialLoad={false}
+					>
+						<ActivityList />
+					</InfiniteScroll>
+					{loadingNext && <Spinner size="lg" />}
 				</GridItem>
 				<GridItem
 					order={[1, 1, 2]}

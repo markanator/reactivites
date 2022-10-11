@@ -1,5 +1,12 @@
 import { UseToastOptions } from "@chakra-ui/react";
 
+export interface PaginationHeader {
+	currentPage: number;
+	itemsPerPage: number;
+	totalItems: number;
+	totalPages: number;
+}
+
 declare global {
 	interface Window {
 		toast: (options?: UseToastOptions | undefined) => unknown;

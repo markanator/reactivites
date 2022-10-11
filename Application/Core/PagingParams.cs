@@ -7,7 +7,7 @@
         // initial page number
         public int PageNumber { get; set; } = 1;
         // default amount a user gets, before they set a preference
-        private int _pageSize = 2;
+        private int _pageSize = 10;
 
         public int PageSize
         {

@@ -1,20 +1,35 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "src/async/fetcher/agent";
-import type { Activity, User } from "~/types";
+import type { Activity, PaginationHeader, User } from "~/types";
 import dayjs from "dayjs";
 import { store } from "./store";
 import Profile from "~/lib/Profile";
 import { ActivityFormValues } from "~/lib/ActivityFormValues";
 import { Activity as ActivityClass } from "~/lib/Activity";
+import { PaginationParams } from "~/lib/PaginationParams";
 export default class ActivityStore {
 	activityRegistry = new Map<string, Activity>();
 	selectedActivity: Activity | undefined = undefined;
 	isEditing = false;
 	isLoading = false;
 	isLoadingInitial = false;
+	//  pagination support
+	pagination: PaginationHeader | null = null;
+	pagingParams = new PaginationParams();
 
 	constructor() {
 		makeAutoObservable(this);
+	}
+
+	setPagingParams = (paginationParams: PaginationParams) => {
+		this.pagingParams = paginationParams;
+	};
+
+	get axiosParams() {
+		const params = new URLSearchParams();
+		params.append("pageNumber", this.pagingParams.pageNumber.toString());
+		params.append("pageSize", this.pagingParams.pageSize.toString());
+		return params;
 	}
 
 	get activitiesByDate() {
@@ -37,17 +52,22 @@ export default class ActivityStore {
 	loadActivities = async () => {
 		this.isLoadingInitial = true;
 		try {
-			const activitiesFromDb = await agent.Activities.list();
+			const results = await agent.Activities.list(this.axiosParams);
 			runInAction(() => {
-				activitiesFromDb.forEach((act) => {
+				results.data.forEach((act) => {
 					this.addActivityToRegistry(act);
 				});
 			});
+			this.setPagination(results.pagination);
 		} catch (error) {
 			console.error(error);
 		} finally {
 			this.setLoadingInitial(false);
 		}
+	};
+
+	setPagination = (pagination: PaginationHeader) => {
+		this.pagination = pagination;
 	};
 
 	loadActivityFromId = async (id: string) => {

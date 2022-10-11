@@ -1,11 +1,12 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserFormValues } from "~/features/users/utils";
 import { ActivityFormValues } from "~/lib/ActivityFormValues";
+import { PaginationResults } from "~/lib/PaginationResults";
 import { Activity, Photo, Profile, User } from "~/types";
 import axios from "./index";
 
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
-
+// base requests
 const requests = {
 	get: <T>(url: string) => axios.get<T>(url).then(responseBody),
 	post: <T>(url: string, body: unknown = {}, config: AxiosRequestConfig<unknown> = {}) =>
@@ -16,7 +17,7 @@ const requests = {
 
 const Activities = {
 	list: (params?: URLSearchParams) =>
-		axios.get<Activity[]>("/activities", { params }).then(responseBody),
+		axios.get<PaginationResults<Activity[]>>("/activities", { params }).then(responseBody),
 	details: (id: string) => requests.get<Activity>(`/activities/${id}`),
 	create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
 	update: (activity: ActivityFormValues) =>

@@ -1,4 +1,5 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { PaginationResults } from "~/lib/PaginationResults";
 import { store } from "~/stores/store";
 import { sleep } from "../../utils/sleeper";
 
@@ -20,6 +21,11 @@ instance.interceptors.response.use(
 	async (res) => {
 		try {
 			await sleep();
+			const pagination = res.headers["pagination"];
+			if (pagination) {
+				res.data = new PaginationResults(res.data, JSON.parse(pagination));
+				return res as AxiosResponse<PaginationResults<unknown>>;
+			}
 			return res;
 		} catch (err) {
 			console.warn(err);
