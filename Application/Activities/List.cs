@@ -4,16 +4,18 @@ using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Activities
 {
     public class List
     {
-        public class Query : IRequest<Results<List<ActivityDto>>> { }
+        public class Query : IRequest<Results<PagedList<ActivityDto>>>
+        {
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Results<List<ActivityDto>>>
+        public class Handler : IRequestHandler<Query, Results<PagedList<ActivityDto>>>
         {
             private readonly DataContext _context;
             private readonly IMapper mapper;
@@ -26,15 +28,17 @@ namespace Application.Activities
                 userAccessor = _userAccessor;
             }
 
-            public async Task<Results<List<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Results<PagedList<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 // fetch db activities from Dto fields, results in slim SQL query
-                var activities = await _context.Activities
+                var query = _context.Activities
+                    .OrderBy(d => d.Date)
                     .ProjectTo<ActivityDto>(mapper.ConfigurationProvider,
                         new { currentUsername = userAccessor.GetUsername() })
-                    .ToListAsync();
+                    .AsQueryable();
                 // output
-                return Results<List<ActivityDto>>.Success(activities);
+                return Results<PagedList<ActivityDto>>.Success(
+                    await PagedList<ActivityDto>.CreateAsync(query, request.Params.PageNumber, request.Params.PageSize));
             }
         }
     }
