@@ -38,7 +38,7 @@ const Profiles = {
 		const formData = new FormData();
 		formData.append("File", file);
 		return requests.post<Photo>("photos", formData, {
-			headers: { "Content-type": "multipart/form-data" },
+			headers: { "Content-Type": "multipart/form-data" },
 		});
 	},
 	setMainPhoto: (id: string) => requests.post<void>(`/photos/${id}/setMain`, {}),
