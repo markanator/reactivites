@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Persistence;
+using Npgsql;
 
 namespace API.Extensions
 {
@@ -21,7 +22,8 @@ namespace API.Extensions
             });
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                // opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(config.GetConnectionString("DefaultConnection"));
             });
             services.AddCors(opt =>
             {
@@ -35,7 +37,7 @@ namespace API.Extensions
                         .WithOrigins(config["FE_CONNECTION_URL"]);
                 });
             });
-            // to allow for CQRS + mediator pattern 
+            // to allow for CQRS + mediator pattern
             services.AddMediatR(typeof(List.Handler).Assembly);
             // allows for use of autoMapper throughout the project
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
