@@ -20,7 +20,7 @@ instance.interceptors.request.use((config: AxiosRequestConfig<unknown>) => {
 instance.interceptors.response.use(
 	async (res) => {
 		try {
-			await sleep();
+			if (import.meta.env.DEV) await sleep();
 			const pagination = res.headers["pagination"];
 			if (pagination) {
 				res.data = new PaginationResults(res.data, JSON.parse(pagination));

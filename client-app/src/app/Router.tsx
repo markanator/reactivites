@@ -6,7 +6,13 @@ export const router = createBrowserRouter(
 		<>
 			<Route path="/" element={<Loaded.App />}>
 				<Route index element={<Loaded.HomePage />} />
-				<Route element={<Loaded.ActivitiesLayout />}>
+				<Route
+					element={
+						<Loaded.ProtectedLayout>
+							<Loaded.ActivitiesLayout />
+						</Loaded.ProtectedLayout>
+					}
+				>
 					<Route path="activities" element={<Outlet />}>
 						<Route index element={<Loaded.ActivityDashboard />} />
 						<Route path="create" element={<Loaded.ActivityForm />} />
@@ -16,11 +22,10 @@ export const router = createBrowserRouter(
 						</Route>
 					</Route>
 					<Route path="profiles/:username" element={<Loaded.ProfilePage />} />
-					<Route path="login" element={<Loaded.LoginPage />} />
 					<Route path="test-errors" element={<Loaded.TestErrorsPage />} />
-					<Route path="server-error" element={<Loaded.ServerError />} />
-					<Route path="*" element={<Loaded.NotFound />} />
 				</Route>
+				<Route path="server-error" element={<Loaded.ServerError />} />
+				<Route path="*" element={<Loaded.NotFound />} />
 			</Route>
 		</>,
 	),

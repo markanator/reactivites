@@ -394,3 +394,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+API/wwwroot/*

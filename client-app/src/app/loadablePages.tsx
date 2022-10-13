@@ -7,6 +7,9 @@ export const HomePage = loadable(() => import("~/features/home/HomePage"), {
 export const App = loadable(() => import("~/app/App"), {
 	fallback: <ScreenLoading />,
 });
+export const ProtectedLayout = loadable(() => import("~/Layouts/ProtectedLayout"), {
+	fallback: <ScreenLoading />,
+});
 
 // ACTIVITES
 export const ActivitiesLayout = loadable(() => import("~/Layouts/ActivitiesLayout"), {

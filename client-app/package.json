@@ -5,8 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"prebuild": "rm -rf ./dist",
 		"build": "tsc && vite build",
+		"postbuild": "mv ./dist ../API/wwwroot",
 		"preview": "vite preview",
 		"lint": "eslint src/**/*.{ts,tsx}",
 		"lint:fix": "npm run lint -- --fix",

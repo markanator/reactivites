@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useStoreContext } from "~/stores/store";
 import ScreenLoading from "~/components/ScreenLoading";
 import { useAttachScripts } from "../hooks/useAttachScripts";
+import ScrollToTop from "~/utils/scrollToTop";
 
 const App = () => {
 	useAttachScripts();
@@ -19,6 +20,7 @@ const App = () => {
 	if (!commonStore.appLoaded) return <ScreenLoading />;
 	return (
 		<>
+			<ScrollToTop />
 			<Outlet />
 		</>
 	);
