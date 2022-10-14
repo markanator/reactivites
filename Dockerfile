@@ -25,7 +25,7 @@ RUN dotnet publish "API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-# COPY ["API/appsettings.json", "."]
+COPY ["API/appsettings.json", "."]
 COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
