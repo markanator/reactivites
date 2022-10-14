@@ -1,0 +1,23 @@
+{
+  "name": "reactivites",
+  "version": "1.0.0",
+  "main": "client-app/src/main.tsx",
+  "private": true,
+  "scripts": {
+    "build:client": "cd ./client-app/ && npm run build",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markanator/reactivites.git"
+  },
+  "keywords": [],
+  "author": "Mark Ambrocio <wowmarkambro@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/markanator/reactivites/issues"
+  },
+  "homepage": "https://github.com/markanator/reactivites#readme",
+  "devDependencies": {
+    "husky": "^8.0.1"
+  }
+}
