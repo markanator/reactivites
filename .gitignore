@@ -396,4 +396,3 @@ dist-ssr
 *.sw?
 
 API/wwwroot/*
-fly.toml
