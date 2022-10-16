@@ -18,7 +18,7 @@ function App() {
 			>
 				<Text>
 					Developed with 🧠 by:{" "}
-					<Link fontWeight={600} href="https://twitter.com/_mark_ambro" target="_blank">
+					<Link fontWeight={600} href="https://www.linkedin.com/in/mark-ambrocio" target="_blank">
 						Mark Ambro
 					</Link>
 				</Text>
