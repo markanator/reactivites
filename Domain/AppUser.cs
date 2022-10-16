@@ -14,8 +14,8 @@ namespace Domain
         public ICollection<UserFollowing> Followers { get; set; }
         // people this use chooses to follow
         public ICollection<UserFollowing> Followings { get; set; }
-
-
+        // adding refreshTokens
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 
 }
