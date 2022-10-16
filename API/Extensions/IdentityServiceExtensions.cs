@@ -33,6 +33,8 @@ namespace API.Extensions
                         IssuerSigningKey = key,
                         ValidateIssuer = false,
                         ValidateAudience = false,
+                        ValidateLifetime = true, // checks for expiry of token
+                        ClockSkew = TimeSpan.Zero, // removes 5min window default
                     };
                     options.Events = new JwtBearerEvents
                     {

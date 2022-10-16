@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 
 namespace API.Controllers
 {
-	[AllowAnonymous]// anyone can use these endpoints
 	[ApiController]
 	[Route("api/[controller]")]
 	public class AccountController : ControllerBase
@@ -35,6 +34,8 @@ namespace API.Controllers
 				BaseAddress = new System.Uri("https://graph.facebook.com")
 			};
 		}
+
+		[AllowAnonymous]
 		[HttpPost("login")]
 		public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
 		{
@@ -47,12 +48,14 @@ namespace API.Controllers
 			var res = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 			if (res.Succeeded)
 			{
+				await SetRefreshToken(user);
 				return CreateUserObject(user);
 			}
 			// sketchy login attempt
 			return Unauthorized("Invalid Password");
 		}
 
+		[AllowAnonymous]
 		[HttpPost("register")]
 		public async Task<ActionResult<UserDto>> Register(RegisterDto regDto)
 		{
@@ -75,6 +78,7 @@ namespace API.Controllers
 			var res = await userManager.CreateAsync(user, regDto.Password);
 			if (res.Succeeded)
 			{
+				await SetRefreshToken(user);
 				return CreateUserObject(user);
 			}
 
@@ -93,10 +97,11 @@ namespace API.Controllers
 
 			if (user == null) return Unauthorized();
 
-			//await SetRefreshToken(user);
+			await SetRefreshToken(user);
 			return CreateUserObject(user);
 		}
 
+		[AllowAnonymous]
 		[HttpPost("fbLogin")]
 		public async Task<ActionResult<UserDto>> FacebookLogin(string accessToken)
 		{
@@ -131,6 +136,26 @@ namespace API.Controllers
 			var createNewUserResult = await userManager.CreateAsync(user);
 			if (!createNewUserResult.Succeeded) return BadRequest("Problem creating user account");
 
+			await SetRefreshToken(user);
+			return CreateUserObject(user);
+		}
+
+		[Authorize]
+		[HttpPost("refresh")]
+		public async Task<ActionResult<UserDto>> RefreshToken()
+		{
+			var refreshToken = Request.Cookies["refreshToken"];
+
+			var user = await userManager.Users
+				.Include(p => p.Photos)
+				.Include(r => r.RefreshTokens)
+				.FirstOrDefaultAsync(u => u.UserName == User.FindFirstValue(ClaimTypes.Name));
+			if (user == null) return Unauthorized();
+
+			var oldToken = user.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
+			if (oldToken != null && !oldToken.IsActive) return Unauthorized();
+
+			// create new JWT for user
 			return CreateUserObject(user);
 		}
 
@@ -143,6 +168,20 @@ namespace API.Controllers
 				Token = tokenService.CreateToken(user),
 				Username = user.UserName
 			};
+		}
+
+		private async Task SetRefreshToken(AppUser user)
+		{
+			var refreshToken = tokenService.GenerateRefreshToken();
+			user.RefreshTokens.Add(refreshToken);
+			await userManager.UpdateAsync(user);
+			// send back as cookie
+			var cookieOptions = new CookieOptions
+			{
+				HttpOnly = true, // not accessible via JS
+				Expires = DateTime.UtcNow.AddDays(7),
+			};
+			Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 		}
 	}
 }
