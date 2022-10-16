@@ -53,7 +53,8 @@ namespace API
 					"sha256-wGsX+U/5/7lWRr7MvYQoXrHmajGTY+1KUob4gEPPnH0=",
 					"sha256-GNF74DLkXb0fH3ILHgILFjk1ozCF3SNXQ5mQb7WLu/Y=",
 					"sha256-DpOoqibK/BsYhobWHnU38Pyzt5SjDZuR/mFsAiVN7kk=",
-					"sha256-wkAU1AW/h8YFx0XlzvpTllAKnFEO2tw8aKErs5a26LY="
+					"sha256-wkAU1AW/h8YFx0XlzvpTllAKnFEO2tw8aKErs5a26LY=",
+					"sha256-Y/huXlwoYkVyQlxwSVcCi1RCDGDCSVBzDt0hYP9qlTc="
 					))
 				.FontSources(s => s.Self())
 				.FormActions(s => s.Self())

@@ -82,8 +82,4 @@ export const NAV_ITEMS: Array<NavItem> = [
 		label: "Activities",
 		href: "/activities",
 	},
-	{
-		label: "Errors",
-		href: "/test-errors",
-	},
 ];
