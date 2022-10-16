@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reactivities</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Reactivities</title>
+	</head>
+	<body>
+		<div id="root"></div>
+
+		<script>
+			window.fbAsyncInit = function () {
+				FB.init({
+					appId: "910643093235788",
+					autoLogAppEvents: true,
+					xfbml: true,
+					version: "v15.0",
+				});
+			};
+		</script>
+		<script
+			async
+			defer
+			crossorigin="anonymous"
+			src="https://connect.facebook.net/en_US/sdk.js"
+		></script>
+
+		<script type="module" src="/src/main.tsx"></script>
+	</body>
 </html>

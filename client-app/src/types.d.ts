@@ -11,6 +11,7 @@ declare global {
 	interface Window {
 		toast: (options?: UseToastOptions | undefined) => unknown;
 		navigate: (url: string) => void;
+		FB: any;
 	}
 }
 export interface Activity {

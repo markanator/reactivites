@@ -1,4 +1,4 @@
-import { Flex, Heading, Stack } from "@chakra-ui/react";
+import { Button, Divider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "~/stores/store";
@@ -7,7 +7,7 @@ import RegisterModal from "../users/RegisterModal";
 
 const HomePage = () => {
 	const {
-		userStore: { isLoggedIn },
+		userStore: { isLoggedIn, facebookLogin, isLoadingFacebook },
 	} = useStoreContext();
 
 	return (
@@ -22,6 +22,10 @@ const HomePage = () => {
 				<Stack spacing={6}>
 					<LoginModal />
 					<RegisterModal />
+					<Divider />
+					<Button colorScheme="facebook" onClick={facebookLogin} isLoading={isLoadingFacebook}>
+						Login with Facebook
+					</Button>
 				</Stack>
 			)}
 		</Flex>
