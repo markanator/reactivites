@@ -8,6 +8,7 @@ export default class UserStore {
 	user: User | null = null;
 	fbAccessToken: string | null = null;
 	isLoadingFacebook = false;
+	refreshTokenTimeout?: number;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -20,7 +21,8 @@ export default class UserStore {
 		try {
 			const user = await agent.Account.login(creds);
 			store.commonStore.setToken(user.token);
-			// this.startRefreshTokenTimer(user);
+			this.startRefreshTimer(user);
+
 			// required to mutate mobx, in async block
 			runInAction(() => (this.user = user));
 			window?.navigate("/activities");
@@ -41,6 +43,8 @@ export default class UserStore {
 		try {
 			const user = await agent.Account.current();
 			store.commonStore.setToken(user.token);
+			this.startRefreshTimer(user);
+
 			runInAction(() => (this.user = user));
 			// this.startRefreshTokenTimer(user);
 		} catch (error) {
@@ -50,7 +54,13 @@ export default class UserStore {
 
 	register = async (creds: UserFormValues) => {
 		try {
-			await agent.Account.register(creds);
+			const user = await agent.Account.register(creds);
+			store.commonStore.setToken(user.token);
+			this.startRefreshTimer(user);
+			runInAction(() => {
+				this.user = user;
+			});
+
 			window?.navigate(`/account/registerSuccess?email=${creds.email}`);
 		} catch (error) {
 			console.log(error);
@@ -79,6 +89,8 @@ export default class UserStore {
 			agent.Account.fbLogin(accessToken)
 				.then((user) => {
 					store.commonStore.setToken(user.token);
+					this.startRefreshTimer(user);
+
 					runInAction(() => {
 						this.user = user;
 						this.isLoadingFacebook = false;
@@ -105,4 +117,31 @@ export default class UserStore {
 			);
 		}
 	};
+
+	refreshToken = async () => {
+		this.stopRefreshTimer();
+		try {
+			const user = await agent.Account.refreshToken();
+			runInAction(() => {
+				this.user = user;
+			});
+			store.commonStore.setToken(user.token);
+			this.startRefreshTimer(user);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	private startRefreshTimer(user: User) {
+		const jwtToken = JSON.parse(atob(user.token.split(".")[1]));
+		const expires = new Date(jwtToken.exp * 1000);
+		// sets timeout value, 30s before expires
+		// prettier-ignore
+		const timeout = expires.getTime() - Date.now() - (60 * 1000);
+		this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
+	}
+
+	private stopRefreshTimer() {
+		clearTimeout(this.refreshTokenTimeout);
+	}
 }

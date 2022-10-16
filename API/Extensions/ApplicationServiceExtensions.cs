@@ -37,7 +37,7 @@ namespace API.Extensions
                                     .AllowAnyMethod()
                                     .AllowAnyHeader()
                                     .AllowCredentials()
-                                    .WithExposedHeaders("Pagination")
+                                    .WithExposedHeaders("Pagination", "WWW-Authenticate")
                                     .WithOrigins(config["FE_CONNECTION_URL"]);
                             });
             });

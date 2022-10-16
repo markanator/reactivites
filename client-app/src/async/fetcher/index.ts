@@ -35,7 +35,7 @@ instance.interceptors.response.use(
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(err: AxiosError<any>) => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const { data, status, config } = err.response!;
+		const { data, status, config, headers } = err.response!;
 		switch (status) {
 			case 400:
 				if (typeof data === "string") {
@@ -60,11 +60,17 @@ instance.interceptors.response.use(
 				}
 				break;
 			case 401:
-				window?.toast({
-					status: "error",
-					title: "Unauthorized, please login.",
-					position: "bottom-right",
-				});
+				if (
+					status === 401 &&
+					headers["www-authenticate"]?.startsWith('Bearer error="invalid_token"')
+				) {
+					store.userStore.logout();
+					window?.toast({
+						status: "error",
+						title: "Session expired - please login",
+						position: "bottom-right",
+					});
+				}
 				break;
 			case 404:
 				window?.navigate("/not-found");
