@@ -24,6 +24,10 @@ export const router = createBrowserRouter(
 					<Route path="profiles/:username" element={<Loaded.ProfilePage />} />
 					<Route path="test-errors" element={<Loaded.TestErrorsPage />} />
 				</Route>
+				<Route path="account" element={<Outlet />}>
+					<Route path="verifyEmail" element={<Loaded.ConfirmEmail />} />
+					<Route path="registerSuccess" element={<Loaded.RegisterSuccess />} />
+				</Route>
 				<Route path="server-error" element={<Loaded.ServerError />} />
 				<Route path="*" element={<Loaded.NotFound />} />
 			</Route>

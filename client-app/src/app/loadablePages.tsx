@@ -39,6 +39,12 @@ export const ProfilePage = loadable(() => import("~/features/profiles/ProfilePag
 export const LoginPage = loadable(() => import("~/features/users/LoginForm"), {
 	fallback: <ScreenLoading />,
 });
+export const RegisterSuccess = loadable(() => import("~/features/users/RegisterSuccess"), {
+	fallback: <ScreenLoading />,
+});
+export const ConfirmEmail = loadable(() => import("~/features/users/ConfirmEmail"), {
+	fallback: <ScreenLoading />,
+});
 
 // ERROR
 export const ServerError = loadable(() => import("~/features/errors/ServerError"), {
