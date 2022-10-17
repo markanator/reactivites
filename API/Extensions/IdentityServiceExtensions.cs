@@ -17,9 +17,11 @@ namespace API.Extensions
             services.AddIdentityCore<AppUser>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
+                opt.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<DataContext>()
-                .AddSignInManager<SignInManager<AppUser>>();
+                .AddSignInManager<SignInManager<AppUser>>()
+                .AddDefaultTokenProviders(); // add tokens for confirmed email account
 
             // jwt stuff
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT_SECRET_KEY"]));

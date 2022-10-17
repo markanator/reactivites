@@ -1,6 +1,7 @@
 ﻿using Application.Activities;
 using Application.Core;
 using Application.Interfaces;
+using Infrastructure.Email;
 using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
@@ -45,10 +46,11 @@ namespace API.Extensions
             services.AddMediatR(typeof(List.Handler).Assembly);
             // allows for use of autoMapper throughout the project
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            // Dep Inj
             // add ability to get user from httpContext from any authenticated reqs
             services.AddScoped<IUserAccessor, UserAccessor>();
-            // Dep Inj
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            services.AddScoped<IEmailSender, EmailSender>();
             // add cloud photo config
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             // adds signalR support
