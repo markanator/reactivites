@@ -19,5 +19,8 @@
   "homepage": "https://github.com/markanator/reactivites#readme",
   "devDependencies": {
     "husky": "^8.0.1"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
