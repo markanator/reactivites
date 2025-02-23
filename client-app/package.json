@@ -65,7 +65,7 @@
 		"eslint-plugin-react-hooks": "^4.6.2",
 		"prettier": "^3.3.3",
 		"typescript": "^5.5.4",
-		"vite": "^5.4.2",
+		"vite": "^5.4.14",
 		"vite-plugin-mkcert": "^1.17.6",
 		"vite-tsconfig-paths": "^5.0.1",
 		"vitest": "^2.1.9"
